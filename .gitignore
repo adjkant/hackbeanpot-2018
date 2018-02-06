@@ -1,5 +1,6 @@
 # IDEA
 .idea
+static/.idea
 
 # Python Related
 *.pyc
