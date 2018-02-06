@@ -1,0 +1,6 @@
+bcrypt
+Flask
+Flask-API
+mysqlclient
+SQLAlchemy
+requests

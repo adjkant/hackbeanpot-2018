@@ -1,0 +1,12 @@
+# IDEA
+.idea
+
+# Python Related
+*.pyc
+__pycache__
+
+# Local Databases
+*.db
+
+# Local . Files
+*.DS_Store
