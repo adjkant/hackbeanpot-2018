@@ -107,12 +107,12 @@ def logout_user():
   result = SessionQueries.delete_session(db, session)
 
   # Create and send response
-  response = make_response(redirect('/'))
+  response = jsonify(dict(success=True))
 
   if result:
     response.set_cookie('sessionToken', '', expires=0)
 
-  return response
+  return response, status.HTTP_200_OK
 
 @user_api.route('/login/check', methods=['POST'])
 def check_login():

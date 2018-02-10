@@ -2,15 +2,21 @@
   <div class="menu">
     <div class="title">Intern Up</div>
     <div class="icons">
-      <i class="fa fa-home" aria-hidden="true"></i>
-      <i class="fa fa-info-circle" aria-hidden="true"></i>
-      <i class="fa fa-search" aria-hidden="true"></i>
-      <i class="fa fa-user" aria-hidden="true"></i>
+      <span v-if="$cookies.get('sessionToken')">Test</span>
+      <router-link to="home"><i class="fa fa-home" aria-hidden="true"></i></router-link>
+      <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
+      <router-link to="search"><i class="fa fa-search" aria-hidden="true"></i></router-link>
+      <router-link to="profile"><i class="fa fa-user" aria-hidden="true"></i></router-link>
+      <a href="#"><a v-on:click="logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a></a>
     </div>
   </div>
 </template>
 
 <style scoped>
+  a {
+    color: inherit;
+    text-decoration: None;
+  }
   .menu {
     display: inline-block;
     width: 100%;
@@ -38,9 +44,28 @@
 </style>
 
 <script>
+  import axios from 'axios';
+  import router from '@/router/index';
 
   export default {
-    name: 'site-menu'
+    name: 'site-menu',
+    methods: {
+      logout() {
+        let instance = axios.create({
+          baseURL: 'http://localhost:5000/api/'
+        });
+
+        instance.post('/user/logout', {}, {withCredentials: true})
+          .then(response => {
+            console.log('Logged out');
+            router.push("/");
+          })
+          .catch(error => {
+            console.log(error);
+            router.push("/");
+          });
+      }
+    }
   };
 
 </script>

@@ -3,6 +3,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios';
 
+Vue.use(require('vue-cookies'));
+import VueCookies from 'vue-cookies';
+
 // Pages
 import Splash from '@/components/pages/Splash'
 import About from '@/components/pages/About'
@@ -17,23 +20,28 @@ import Review from '@/components/pages/Review'
 import Page404 from '@/components/pages/Page404'
 
 Vue.use(Router);
+Vue.use(VueCookies);
 
 export default new Router({
   routes: [
     {
       path: '/',
+      name: 'splash',
       component: Splash
     },
     {
       path: '/about',
+      name: 'about',
       component: About
     },
     {
       path: '/login',
+      name: 'login',
       component: Login
     },
     {
       path: '/register',
+      name: 'register',
       component: Register
     },
     {
@@ -44,36 +52,43 @@ export default new Router({
     },
     {
       path: '/profile',
+      name: 'profile',
       component: Profile,
       beforeEnter: requireAuth
     },
     {
       path: '/profile/edit',
+      name: 'profile-edit',
       component: ProfileEdit,
       beforeEnter: requireAuth
     },
     {
       path: '/search',
+      name: 'search',
       component: Search,
       beforeEnter: requireAuth
     },
     {
       path: '/company/:id',
+      name: 'company',
       component: Company,
       beforeEnter: requireAuth
     },
     {
       path: '/company/:id/:jobId',
+      name: 'company-job',
       component: Company,
       beforeEnter: requireAuth
     },
     {
       path: '/review',
+      name: 'review',
       component: Review,
       beforeEnter: requireAuth
     },
     {
       path: '*',
+      name: '404',
       component: Page404
     }
   ]
