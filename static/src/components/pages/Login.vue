@@ -18,6 +18,7 @@
 <script>
 
   import axios from 'axios';
+  import router from '@/router/index';
 
   export default {
     name: 'login',
@@ -38,16 +39,16 @@
           password: this.login_password
         };
 
-        console.log(loginInfo);
-
         instance.post('/user/login', loginInfo, {withCredentials: true})
           .then(response => {
-            console.log('Got: ' + response.data);
-            console.log(response.headers);
+            router.push("home");
           })
           .catch(error => {
-            console.log(error);
+            this.login_password = '';
+            this.login_email = '';
           });
+
+
       }
     }
   }

@@ -38,6 +38,7 @@ export default new Router({
     },
     {
       path: '/home',
+      name: 'home',
       component: Home,
       beforeEnter: requireAuth
     },
@@ -96,7 +97,4 @@ function requireAuth (to, from, next) {
         path: from.fullPath
       });
     });
-
-
-
 }
