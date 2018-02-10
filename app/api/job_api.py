@@ -17,12 +17,12 @@ def create_job():
   # If not logged in, return unauthorized
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   if JobQueries.create_job(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @job_api.route('/delete', methods=['DELETE'])
 def delete_job():
@@ -30,22 +30,22 @@ def delete_job():
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   if JobQueries.delete_job(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_400_BAD_REQUEST
+    return "", status.HTTP_400_BAD_REQUEST
 
 @job_api.route('/<int:job_id>', methods=['GET'])
 def get_job(job_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   job = JobQueries.get_job(db, job_id)
   if job:
     return jsonify(job.serialize()), status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_404
+    return "", status.HTTP_404
