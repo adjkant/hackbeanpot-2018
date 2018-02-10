@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.api.database.models.Base import Base
+from app.api.database.models.SchoolModel import School
 
 class User(Base):
   __tablename__ = 'users'

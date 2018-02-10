@@ -5,9 +5,13 @@ from flask_api import status
 # Basics
 from functools import wraps
 
+import app.api.database.UserQueries as UserQueries
+import app.api.database.SessionQueries as SessionQueries
+
+from app.api.database import session_manager
+
 # Response Constants
 RESPONSE_DATABASE_ERROR = ('Database Error', status.HTTP_500_INTERNAL_SERVER_ERROR)
-RESPONSE_NOT_LOGGED_IN = dict(success=False, error=1)
 
 
 def validate_json(expected_fields):
@@ -30,3 +34,35 @@ def validate_json(expected_fields):
 
     return wrapper
   return decorator
+
+def get_logged_in_user(db, request):
+  session = get_session(db, request.cookies)
+  if not session or not session.user_id:
+    return False
+  else:
+    user = UserQueries.get_user(db, session.user_id)
+    if not user:
+      return False
+    else:
+      return user
+
+def login_user_utility(db, email, password):
+  user = UserQueries.user_by_credentials(db, email, password)
+
+  # Bad Email / Password
+  if not user:
+    return None
+
+  # Return session
+  return SessionQueries.create_session(db, user.id)
+
+def get_session(db, cookies):
+  if 'sessionToken' not in cookies:
+    return None
+
+  session = SessionQueries.session_by_token(db, cookies['sessionToken'])
+
+  if not session:
+    return None
+
+  return session
