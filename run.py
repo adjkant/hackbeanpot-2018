@@ -18,13 +18,6 @@ app.secret_key = 'Hackbeanpot 2018'
 # API Routes
 app.register_blueprint(example_api, url_prefix='/api/test')
 
-
-# Web Routes
-@app.route('/')
-def send_app():
-  return send_file('static/index.html', cache_timeout=0)
-
-
 # Startup
 if __name__ == "__main__":
   database_uri = 'sqlite:///app/local_db.db'
