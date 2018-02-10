@@ -11,3 +11,7 @@ __pycache__
 
 # Local . Files
 *.DS_Store
+
+# Virtualenv
+venv/
+env/
