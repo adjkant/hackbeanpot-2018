@@ -24,7 +24,7 @@ def create_company():
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
 
-@company_api.route('/edit', methods=['POST'])
+@company_api.route('/edit', methods=['PUT'])
 def edit_company():
   db = session_manager.new_session()
   body = request.get_json()

@@ -27,7 +27,7 @@ def create_review():
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
 
-@review_api.route('/edit', methods=['POST'])
+@review_api.route('/edit', methods=['PUT'])
 def edit_review():
   db = session_manager.new_session()
   body = request.get_json()
