@@ -7,6 +7,7 @@
 
 <script>
 import axios from 'axios';
+
 var instance = axios.create({
   baseURL: 'http://127.0.0.1:5000/api/',
   timeout: 1000,
@@ -23,7 +24,7 @@ export default {
     .then(response => {
       this.msg = response.data;
     })
-    .error(response => {
+    .catch(response => {
       console.log(response);
     })
 
