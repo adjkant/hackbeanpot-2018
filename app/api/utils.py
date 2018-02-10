@@ -46,9 +46,7 @@ def get_logged_in_user(db, request):
     else:
       return user
 
-def login_user_utility(email, password):
-  db = session_manager.new_session()
-
+def login_user_utility(db, email, password):
   user = UserQueries.user_by_credentials(db, email, password)
 
   # Bad Email / Password

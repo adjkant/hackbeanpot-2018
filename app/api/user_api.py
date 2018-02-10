@@ -22,7 +22,7 @@ def create_user():
 
   if user_created:
     # Log In User
-    session = login_user_utility(body['email'], body['password'])
+    session = login_user_utility(db, body['email'], body['password'])
     response = jsonify(dict(success=True))
     response.set_cookie('sessionToken', session.token)
     return response, status.HTTP_200_OK
@@ -32,8 +32,8 @@ def create_user():
     else:
       return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/<int:user_id>/edit', methods=['PUT'])
-def edit_user(user_id):
+@user_api.route('/edit', methods=['PUT'])
+def edit_user():
   db = session_manager.new_session()
 
   # Validate user editing is current user
@@ -41,20 +41,17 @@ def edit_user(user_id):
   if not user:
     return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
-  if user.id != user_id:
-    return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
-
   body = request.get_json()
 
-  success = UserQueries.edit_user(db, user_id, body)
+  success = UserQueries.edit_user(db, user.id, body)
 
   if success:
     return jsonify(dict(success=True)), status.HTTP_200_OK
   else:
     return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/<int:user_id>/delete', methods=['DELETE'])
-def delete_user(user_id):
+@user_api.route('/delete', methods=['DELETE'])
+def delete_user():
   db = session_manager.new_session()
 
   # Validate user deleting is current user
@@ -62,28 +59,22 @@ def delete_user(user_id):
   if not user:
     return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
-  if user.id != user_id:
-    return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
-
-  success = UserQueries.delete_user(db, user_id)
+  success = UserQueries.delete_user(db, user.id)
 
   if success:
     return status.HTTP_200_OK
   else:
     return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/<int:user_id>', methods=['GET'])
-def get_user(user_id):
+@user_api.route('/get', methods=['GET'])
+def get_user():
   db = session_manager.new_session()
 
   user = get_logged_in_user(db, request)
   if not user:
     return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
-  if user.id != user_id:
-    return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
-
-  user = UserQueries.get_user(db, user_id)
+  user = UserQueries.get_user(db, user.id)
 
   if not user:
     return jsonify(dict(success=False, error='User not found')), status.HTTP_404_NOT_FOUND
@@ -97,7 +88,7 @@ def login_user():
   body = request.get_json()
 
   # Log in user
-  session = login_user_utility(body['email'], body['password'])
+  session = login_user_utility(db, body['email'], body['password'])
 
   # Bad Email / Password
   if not session:
