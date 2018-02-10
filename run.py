@@ -10,7 +10,7 @@ from app.api.example_api import example_api
 
 # App Declaration
 app = Flask(__name__, static_url_path='')
-app.secret_key = 'The Modern Citizen'
+app.secret_key = 'Hackbeanpot 2018'
 
 # API Routes
 app.register_blueprint(example_api, url_prefix='/api/test')
