@@ -15,15 +15,19 @@ class Review(Base):
   school_id = Column(Integer, ForeignKey('schools.id'))
   school = relationship('School', foreign_keys='Review.school_id')
 
+  job_id = Column(Integer, ForeignKey('jobs.id'))
+  job = relationship('Job', foreign_keys='Review.job_id')
+
   job_type = Column(Enum('co-op', 'internship', 'reu', name='job_types'))
 
   duration = Column(Integer)
 
   location = Column(String(80))
 
-  def __init__(self, user_id, school_id, job_type, duration, location):
+  def __init__(self, user_id, school_id, job_id, job_type, duration, location):
     self.user_id = user_id
     self.school_id = school_id
+    self.job_id = job_id
     self.job_type = job_type
     self.duration = duration
     self.location = location

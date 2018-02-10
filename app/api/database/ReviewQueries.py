@@ -1,0 +1,55 @@
+from sqlalchemy.exc import SQLAlchemyError
+
+from app.api.database.models.ReviewModel import Review
+
+
+def create_review(db, body):
+  uid = body['uid']
+  school_id = body['school_id']
+  job_id = body['job_id']
+  job_type = body['job_type']
+  duration = body['duration']
+  location = body['location']
+  review = Review(uid, school_id, job_id, job_type, duration, location)
+
+  try:
+    db.add(review)
+    db.commit()
+  except SQLAlchemyError:
+    db.rollback()
+    return False
+
+  return True
+
+def edit_review(db, body):
+  review_id = body.pop('review_id')
+  q = db.query(Review).filter(Review.id == review_id).first()
+  try:
+    for key, value in body.items():
+      q.__setattr__(key, value)
+    db.commit()
+  except SQLAlchemyError:
+    db.rollback()
+    return False
+  return True
+
+def delete_review(db, body):
+  try:
+    db.query(Review).filter(Review.id == body['review_id']).delete()
+    db.commit()
+  except SQLAlchemyError:
+    db.rollback()
+    return False
+  return True
+
+def get_reviews_filtered(db, filters):
+  q = db.query(Review).all()
+  for key, value in filters:
+    q = q.filter(Review.__getattr__(key) == value)
+  return q
+
+
+def get_review(db, review_id):
+  return db.query(Review).filter(Review.id == review_id).first()
+
+
