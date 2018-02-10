@@ -1,18 +1,14 @@
 # Flask
 from flask import Blueprint, request, jsonify, make_response
 
-import requests
-
 from app.api.utils import *
 
 from app.api.database import session_manager
 
-from flask import redirect, url_for
+from flask import redirect
 
-from app.api.database.models.UserModel import User
-
-import app.api.database.UserQueries
-import app.api.database.SessionQueries
+import app.api.database.UserQueries as UserQueries
+import app.api.database.SessionQueries as SessionQueries
 
 user_api = Blueprint("user_api", __name__)
 
@@ -21,9 +17,9 @@ user_api = Blueprint("user_api", __name__)
 def create_user():
   db = session_manager.new_session()
   body = request.get_json()
-  
+
   user_created, error = UserQueries.create_user(db, body)
-  
+
   if user_created:
     # Log In User
     session = login_user_utility(body['email'], body['password'])
@@ -43,7 +39,7 @@ def edit_user(user_id):
   # Validate user editing is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(RESPONSE_NOT_LOGGED_IN), status.HTTP_200_OK
+    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
   if user.id != user_id:
     return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
@@ -64,7 +60,7 @@ def delete_user(user_id):
   # Validate user deleting is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(RESPONSE_NOT_LOGGED_IN), status.HTTP_200_OK
+    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
   if user.id != user_id:
     return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
@@ -82,7 +78,7 @@ def get_user(user_id):
 
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(RESPONSE_NOT_LOGGED_IN), status.HTTP_200_OK
+    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
   if user.id != user_id:
     return jsonify(dict(success=False)), status.HTTP_401_UNAUTHORIZED
@@ -105,7 +101,7 @@ def login_user():
 
   # Bad Email / Password
   if not session:
-    return jsonify(RESPONSE_NOT_LOGGED_IN)
+    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
 
   # Create and send response
   response = jsonify(dict(success=True))
@@ -134,4 +130,4 @@ def check_login():
   if user:
     return jsonify(dict(success=True)), status.HTTP_200_OK
   else:
-    return RESPONSE_NOT_LOGGED_IN
+    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED

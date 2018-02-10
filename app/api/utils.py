@@ -5,9 +5,13 @@ from flask_api import status
 # Basics
 from functools import wraps
 
+import app.api.database.UserQueries as UserQueries
+import app.api.database.SessionQueries as SessionQueries
+
+from app.api.database import session_manager
+
 # Response Constants
 RESPONSE_DATABASE_ERROR = ('Database Error', status.HTTP_500_INTERNAL_SERVER_ERROR)
-RESPONSE_NOT_LOGGED_IN = dict(success=False, error=1)
 
 
 def validate_json(expected_fields):

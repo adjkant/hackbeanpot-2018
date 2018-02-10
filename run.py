@@ -1,6 +1,6 @@
 # System and Flask
 import os
-from flask import Flask, send_file
+from flask import Flask
 from flask_cors import CORS
 
 # Database

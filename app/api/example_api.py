@@ -1,9 +1,6 @@
 # Flask
-from flask import Blueprint, request, jsonify
-
-from app.api.utils import *
-
-from app.api.database import session_manager
+from flask import Blueprint
+from flask_api import status
 
 # API Declaration
 # Path: /api
