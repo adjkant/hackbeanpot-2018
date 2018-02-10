@@ -4,6 +4,7 @@ static/.idea
 
 # Node Modules
 node_modules
+package-lock.json
 
 # Python Related
 *.pyc
