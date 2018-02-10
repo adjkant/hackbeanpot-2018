@@ -1,8 +1,19 @@
+// Basics
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Page404 from '@/components/Page404'
-import Register from '@/components/Register'
+
+// Pages
+import Splash from '@/components/pages/Splash'
+import About from '@/components/pages/About'
+import Register from '@/components/pages/Register'
+import Login from '@/components/pages/Login'
+import Home from '@/components/pages/Home'
+import Profile from '@/components/pages/Profile'
+import ProfileEdit from '@/components/pages/ProfileEdit'
+import Search from '@/components/pages/Search'
+import Company from '@/components/pages/Company'
+import Review from '@/components/pages/Review'
+import Page404 from '@/components/pages/Page404'
 
 Vue.use(Router);
 
@@ -10,15 +21,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: HelloWorld
+      component: Splash
     },
     {
       path: '/about',
-      component: HelloWorld
+      component: About
     },
     {
       path: '/login',
-      component: HelloWorld
+      component: Login
     },
     {
       path: '/register',
@@ -26,31 +37,31 @@ export default new Router({
     },
     {
       path: '/home',
-      component: HelloWorld
+      component: Home
     },
     {
       path: '/profile',
-      component: HelloWorld
+      component: Profile
     },
     {
       path: '/profile/edit',
-      component: HelloWorld
+      component: ProfileEdit
     },
     {
       path: '/search',
-      component: HelloWorld
+      component: Search
     },
     {
       path: '/company/:id',
-      component: HelloWorld
+      component: Company
     },
     {
       path: '/company/:id/:jobId',
-      component: HelloWorld
+      component: Company
     },
     {
       path: '/review',
-      component: HelloWorld
+      component: Review
     },
     {
       path: '*',

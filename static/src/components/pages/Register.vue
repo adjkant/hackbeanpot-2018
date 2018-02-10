@@ -16,6 +16,23 @@
   </form>
 </template>
 
+<style scoped>
+  h1, h2 {
+      font-weight: normal;
+  }
+  ul {
+      list-style-type: none;
+      padding:  0;
+  }
+  li {
+      display: inline-block;
+      margin: 0 10px;
+  }
+  a {
+      color: #42b983;
+  }
+</style>
+
 <script>
   import axios from 'axios';
 
@@ -44,7 +61,7 @@
 
         console.log(loginInfo);
 
-        instance.post('/user/register',
+        instance.post('/user/create',
                       loginInfo)
         .then(response => {
           console.log('Got: ' + response.data);
@@ -57,20 +74,3 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding:  0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
