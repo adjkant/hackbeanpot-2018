@@ -2,6 +2,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 
 from app.api.database.models.Base import Base
+from app.api.database.models.SchoolModel import School
+from app.api.database.models.JobModel import Job
+from app.api.database.models.UserModel import User
 
 class Review(Base):
 

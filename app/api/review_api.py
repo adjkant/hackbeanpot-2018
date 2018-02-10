@@ -10,7 +10,7 @@ import json
 
 review_api = Blueprint('review_api', __name__)
 
-@review_api.route('/review/create', methods=['POST'])
+@review_api.route('/create', methods=['POST'])
 @validate_json(['job_id', 'job_type','duration', 'location'])
 def create_review():
   db = session_manager.new_session()
@@ -29,7 +29,7 @@ def create_review():
     return status.HTTP_401_UNAUTHORIZED
 
 
-@review_api.route('/review/edit', methods=['POST'])
+@review_api.route('/edit', methods=['POST'])
 def edit_review():
   db = session_manager.new_session()
   body = request.get_json()
@@ -42,7 +42,7 @@ def edit_review():
   else:
     return status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@review_api.route('/review/delete', methods=['DELETE'])
+@review_api.route('/delete', methods=['DELETE'])
 def delete_review():
   db = session_manager.new_session()
   body = request.get_json()
@@ -55,7 +55,7 @@ def delete_review():
   else:
     return status.HTTP_400_BAD_REQUEST
 
-@review_api.route('/review/<int:review_id>', methods=['GET'])
+@review_api.route('/<int:review_id>', methods=['GET'])
 def get_review(review_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
@@ -71,7 +71,7 @@ def get_review(review_id):
     )
     return response
 
-@review_api.route('/review/select', methods=['GET'])
+@review_api.route('/select', methods=['GET'])
 def get_filtered_reviews():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
