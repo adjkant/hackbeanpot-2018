@@ -37,31 +37,38 @@ export default new Router({
     },
     {
       path: '/home',
-      component: Home
+      component: Home,
+      beforeEnter: requireAuth
     },
     {
       path: '/profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: requireAuth
     },
     {
       path: '/profile/edit',
-      component: ProfileEdit
+      component: ProfileEdit,
+      beforeEnter: requireAuth
     },
     {
       path: '/search',
-      component: Search
+      component: Search,
+      beforeEnter: requireAuth
     },
     {
       path: '/company/:id',
-      component: Company
+      component: Company,
+      beforeEnter: requireAuth
     },
     {
       path: '/company/:id/:jobId',
-      component: Company
+      component: Company,
+      beforeEnter: requireAuth
     },
     {
       path: '/review',
-      component: Review
+      component: Review,
+      beforeEnter: requireAuth
     },
     {
       path: '*',
@@ -69,3 +76,9 @@ export default new Router({
     }
   ]
 })
+
+function requireAuth (to, from, next) {
+  next({
+    path: '/'
+  });
+}
