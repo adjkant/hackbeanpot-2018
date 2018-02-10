@@ -7,7 +7,7 @@
     <label for="login-password">Password:</label>
     <input type="password" id='login-password' v-model="login_password">
     <br/>
-    <button value="Submit" v-on:click="handleSubmit">Submit</button>
+    <div v-on:click="handleSubmit">Submit</div>
   </form>
 </template>
 
@@ -41,7 +41,7 @@
 
         instance.post('/user/login', loginInfo, { withCredentials: true })
           .then(response => {
-            window.location = '/#/home';
+            window.location = '/';
           })
           .catch(error => {
             this.login_password = '';
