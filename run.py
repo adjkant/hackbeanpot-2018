@@ -7,6 +7,7 @@ from flask_cors import CORS
 from app.api.database import session_manager
 
 # API Parts
+from app.api.example_api import example_api
 from app.api.user_api import user_api
 from app.api.review_api import review_api
 
