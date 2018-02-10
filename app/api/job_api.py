@@ -2,7 +2,7 @@
 from flask import Blueprint, request, jsonify
 from flask_api import status
 
-from app.api.utils import get_logged_in_user, validate_json, serialize_all
+from app.api.utils import get_logged_in_user, validate_json
 from app.api.database import session_manager
 import app.api.database.JobQueries as JobQueries
 
@@ -46,6 +46,6 @@ def get_job(job_id):
 
   job = JobQueries.get_job(db, job_id)
   if job:
-    return jsonify(job.serialize()), status.HTTP_200_OK
+    return jsonify(job.serialize), status.HTTP_200_OK
   else:
-    return "", status.HTTP_404
+    return "", status.HTTP_404_NOT_FOUND

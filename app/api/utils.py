@@ -68,4 +68,4 @@ def get_session(db, cookies):
   return session
 
 def serialize_all(collection):
-    return [i.serialize for i in collection]
+  return [i.serialize for i in collection]

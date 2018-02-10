@@ -17,9 +17,9 @@ def create_email_ext():
   user = get_logged_in_user(db, request)
   if user:
     if EmailExtQueries.create_email_ext(db, body):
-        return "", status.HTTP_200_OK
+      return "", status.HTTP_200_OK
     else:
-        return "", status.HTTP_500_INTERNAL_SERVER_ERROR
+      return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
     return "", status.HTTP_401_UNAUTHORIZED
 
@@ -47,6 +47,8 @@ def get_email_ext(school_id):
   email_exts = EmailExtQueries.get_email_exts(db, school_id)
   if email_exts:
     return jsonify(serialize_all(email_exts)), status.HTTP_200_OK
+  else:
+    return "", status.HTTP_404_NOT_FOUND
 
 @email_ext_api.route('/find/<domain>', methods=['GET'])
 def get_school(domain):
@@ -58,3 +60,5 @@ def get_school(domain):
   email_ext = EmailExtQueries.get_email_from_ext(db, domain)
   if email_ext:
     return jsonify(email_ext.serialize), status.HTTP_200_OK
+  else:
+    return "", status.HTTP_404_NOT_FOUND

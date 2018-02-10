@@ -75,5 +75,5 @@ def get_filtered_reviews():
 
   reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
   if reviews == False:
-      return "", status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
   return jsonify(serialize_all(reviews)), status.HTTP_200_OK
