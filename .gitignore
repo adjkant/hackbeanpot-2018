@@ -2,6 +2,9 @@
 .idea
 static/.idea
 
+# Node Modules
+node_modules
+
 # Python Related
 *.pyc
 __pycache__
