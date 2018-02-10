@@ -2,24 +2,21 @@
 from flask import Blueprint, request, jsonify
 from flask_api import status
 
-from app.api.utils import get_logged_in_user, validate_json, serialize_all
+from app.api.utils import get_logged_in_user, validate_json
 from app.api.database import session_manager
-import app.api.database.ReviewQueries as ReviewQueries
+import app.api.database.CompanyQueries as CompanyQueries
 
-review_api = Blueprint('review_api', __name__)
+company_api = Blueprint('company_api', __name__)
 
-@review_api.route('/create', methods=['POST'])
-@validate_json(['job_id', 'job_type','duration', 'location'])
-def create_review():
+@company_api.route('/create', methods=['POST'])
+@validate_json(['name', 'website'])
+def create_company():
   db = session_manager.new_session()
   body = request.get_json()
 
   user = get_logged_in_user(db, request)
   if user:
-    body['uid'] = user.id
-    body['school_id'] = user.school_id
-
-    if ReviewQueries.create_review(db, body):
+    if CompanyQueries.create_company(db, body):
         return jsonify(success=True), status.HTTP_200_OK
     else:
         return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -27,51 +24,39 @@ def create_review():
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
 
-@review_api.route('/edit', methods=['POST'])
-def edit_review():
+@company_api.route('/edit', methods=['POST'])
+def edit_company():
   db = session_manager.new_session()
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
-  if ReviewQueries.edit_review(db, body):
+  if CompanyQueries.edit_company(db, body):
     return jsonify(success=True), status.HTTP_200_OK
   else:
     return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@review_api.route('/delete', methods=['DELETE'])
-def delete_review():
+@company_api.route('/delete', methods=['DELETE'])
+def delete_company():
   db = session_manager.new_session()
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
-  if ReviewQueries.delete_review(db, body):
+  if CompanyQueries.delete_company(db, body):
     return jsonify(success=True), status.HTTP_200_OK
   else:
     return jsonify(success=False), status.HTTP_400_BAD_REQUEST
 
-@review_api.route('/<int:review_id>', methods=['GET'])
-def get_review(review_id):
+@company_api.route('/<int:company_id>', methods=['GET'])
+def get_company(company_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
-  review = ReviewQueries.get_review(db, review_id)
-  if review:
-    return jsonify(review), status.HTTP_200_OK
-
-@review_api.route('/select', methods=['GET'])
-def get_filtered_reviews():
-  db = session_manager.new_session()
-  user = get_logged_in_user(db, request)
-  if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
-
-  reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
-  if reviews == False:
-      return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
-  return jsonify(serialize_all(reviews)), status.HTTP_200_OK
+  company = CompanyQueries.get_company(db, company_id)
+  if company:
+    return jsonify(company.serialize), status.HTTP_200_OK
