@@ -30,7 +30,7 @@ def create_user():
     if error == 'Duplicate Field':
       return jsonify(dict(success=False, error=3)), status.HTTP_200_OK
     else:
-      return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+      return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/edit', methods=['PUT'])
 def edit_user():
@@ -39,14 +39,14 @@ def edit_user():
   # Validate user editing is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   body = request.get_json()
 
   if UserQueries.edit_user(db, user.id, body):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/delete', methods=['DELETE'])
 def delete_user():
@@ -55,12 +55,12 @@ def delete_user():
   # Validate user deleting is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   if UserQueries.delete_user(db, user.id):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/get', methods=['GET'])
 def get_user():
@@ -68,12 +68,12 @@ def get_user():
 
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   user = UserQueries.get_user(db, user.id)
 
   if not user:
-    return jsonify(success=False), status.HTTP_404_NOT_FOUND
+    return "", status.HTTP_404_NOT_FOUND
   else:
     return jsonify(user.serialize()), status.HTTP_200_OK
 
@@ -88,7 +88,7 @@ def login_user():
 
   # Bad Email / Password
   if not session:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   # Create and send response
   response = jsonify(success=True)
@@ -115,6 +115,6 @@ def check_login():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if user:
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
