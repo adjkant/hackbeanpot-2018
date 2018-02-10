@@ -30,3 +30,26 @@ def validate_json(expected_fields):
 
     return wrapper
   return decorator
+
+def get_logged_in_user(db, request):
+  session = get_session(db, request.cookies)
+  if not session or not session.user_id:
+    return False
+  else:
+    user = UserQueries.get_user(db, session.user_id)
+    if not user:
+      return False
+    else:
+      return user
+
+def login_user_utility(email, password):
+  db = session_manager.new_session()
+
+  user = UserQueries.user_by_credentials(db, email, password)
+
+  # Bad Email / Password
+  if not user:
+    return None
+
+  # Return session
+  return SessionQueries.create_session(db, user.id)
