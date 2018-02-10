@@ -79,6 +79,6 @@ export default new Router({
 
 function requireAuth (to, from, next) {
   next({
-    path: '/'
+    path: from.fullPath
   });
 }
