@@ -21,8 +21,7 @@ def create_review(db, body):
 
   return True
 
-def edit_review(db, body):
-  review_id = body.pop('review_id')
+def edit_review(db, body, review_id):
   q = db.query(Review).filter(Review.id == review_id).first()
   try:
     for key, value in body.items():

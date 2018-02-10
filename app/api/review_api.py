@@ -20,25 +20,25 @@ def create_review():
     body['school_id'] = user.school_id
 
     if ReviewQueries.create_review(db, body):
-        return jsonify(success=True), status.HTTP_200_OK
+        return "", status.HTTP_200_OK
     else:
-        return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+        return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
 
-@review_api.route('/edit', methods=['PUT'])
-def edit_review():
+@review_api.route('<int:review_id>/edit', methods=['PUT'])
+def edit_review(review_id):
   db = session_manager.new_session()
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
-  if ReviewQueries.edit_review(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+  if ReviewQueries.edit_review(db, body, review_id):
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @review_api.route('/delete', methods=['DELETE'])
 def delete_review():
@@ -46,19 +46,19 @@ def delete_review():
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   if ReviewQueries.delete_review(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_400_BAD_REQUEST
+    return "", status.HTTP_400_BAD_REQUEST
 
 @review_api.route('/<int:review_id>', methods=['GET'])
 def get_review(review_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   review = ReviewQueries.get_review(db, review_id)
   if review:
@@ -69,9 +69,9 @@ def get_filtered_reviews():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
   if reviews == False:
-      return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+      return "", status.HTTP_401_UNAUTHORIZED
   return jsonify(serialize_all(reviews)), status.HTTP_200_OK

@@ -17,25 +17,25 @@ def create_company():
   user = get_logged_in_user(db, request)
   if user:
     if CompanyQueries.create_company(db, body):
-        return jsonify(success=True), status.HTTP_200_OK
+        return "", status.HTTP_200_OK
     else:
-        return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+        return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
 
-@company_api.route('/edit', methods=['PUT'])
-def edit_company():
+@company_api.route('/<int:company_id>/edit', methods=['PUT'])
+def edit_company(company_id):
   db = session_manager.new_session()
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
-  if CompanyQueries.edit_company(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+  if CompanyQueries.edit_company(db, body, company_id):
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @company_api.route('/delete', methods=['DELETE'])
 def delete_company():
@@ -43,19 +43,19 @@ def delete_company():
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   if CompanyQueries.delete_company(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_400_BAD_REQUEST
+    return "", status.HTTP_400_BAD_REQUEST
 
 @company_api.route('/<int:company_id>', methods=['GET'])
 def get_company(company_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
   company = CompanyQueries.get_company(db, company_id)
   if company:

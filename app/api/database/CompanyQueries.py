@@ -16,8 +16,7 @@ def create_company(db, body):
 
   return True
 
-def edit_company(db, body):
-  company_id = body.pop('company_id')
+def edit_company(db, body, company_id):
   q = db.query(Company).filter(Company.id == company_id).first()
   try:
     for key, value in body.items():
