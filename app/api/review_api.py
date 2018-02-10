@@ -2,8 +2,9 @@
 from flask import Blueprint, request, jsonify
 from flask_api import status
 
-from app.api.utils import get_logged_in_user, validate_json
-from app.api.database import session_manager, ReviewQueries
+from app.api.utils import get_logged_in_user, validate_json, serialize_all
+from app.api.database import session_manager
+import app.api.database.ReviewQueries as ReviewQueries
 
 review_api = Blueprint('review_api', __name__)
 
@@ -61,7 +62,7 @@ def get_review(review_id):
 
   review = ReviewQueries.get_review(db, review_id)
   if review:
-    return jsonify(**review, success=True), status.HTTP_200_OK
+    return jsonify(review), status.HTTP_200_OK
 
 @review_api.route('/select', methods=['GET'])
 def get_filtered_reviews():
@@ -70,8 +71,7 @@ def get_filtered_reviews():
   if not user:
     return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
-  reviews = ReviewQueries.get_review_filtered(db, request.args)
-  if reviews:
-    return jsonify(**reviews, success=True), status.HTTP_200_OK
-  else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+  reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
+  if reviews == False:
+      return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+  return jsonify(serialize_all(reviews)), status.HTTP_200_OK

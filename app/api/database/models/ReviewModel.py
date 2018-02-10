@@ -40,6 +40,7 @@ class Review(Base):
     return {
       'id': self.id,
       'school_id': self.school_id,
+      'job_id': self.job_id,
       'job_type': self.job_type,
       'duration': self.duration,
       'location': self.location

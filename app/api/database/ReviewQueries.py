@@ -42,12 +42,16 @@ def delete_review(db, body):
     return False
   return True
 
-def get_reviews_filtered(db, filters):
-  q = db.query(Review).all()
-  for key, value in filters:
-    q = q.filter(Review.__getattr__(key) == value)
-  return q
+def get_review_filtered(db, filters, user_id):
+  q = db.query(Review)
 
+  for key, value in filters.items():
+    if key == 'user_id' and int(value) != int(user_id):
+        print('User id: ', user_id)
+        print('Value: ', value)
+        return False
+    q = q.filter(getattr(Review, key) == value)
+  return q
 
 def get_review(db, review_id):
   return db.query(Review).filter(Review.id == review_id).first()
