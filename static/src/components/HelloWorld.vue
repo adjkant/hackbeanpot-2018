@@ -1,14 +1,14 @@
 <template>
   <div class="hello">
     <h1>Hello Test</h1>
-    <h2>Message from Backend: {{msg}}</h2>
+    <h2>Message from Backend: {{ msg }}</h2>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 
-var instance = axios.create({
+let instance = axios.create({
   baseURL: 'http://127.0.0.1:5000/api/'
 });
 
