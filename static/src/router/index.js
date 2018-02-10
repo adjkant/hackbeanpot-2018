@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Page404 from '@/components/Page404'
+import Register from '@/components/Register'
 
 Vue.use(Router);
 
@@ -21,7 +22,7 @@ export default new Router({
     },
     {
       path: '/register',
-      component: HelloWorld
+      component: Register
     },
     {
       path: '/home',
