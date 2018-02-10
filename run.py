@@ -12,6 +12,7 @@ from app.api.user_api import user_api
 from app.api.review_api import review_api
 from app.api.school_api import school_api
 from app.api.company_api import company_api
+from app.api.email_ext_api import email_ext_api
 
 # App Declaration
 app = Flask(__name__)
@@ -25,6 +26,7 @@ app.register_blueprint(user_api, url_prefix='/api/user')
 app.register_blueprint(review_api, url_prefix='/api/review')
 app.register_blueprint(school_api, url_prefix='/api/school')
 app.register_blueprint(company_api, url_prefix='/api/company')
+app.register_blueprint(email_ext_api, url_prefix='/api/email-ext')
 
 # Startup
 if __name__ == "__main__":

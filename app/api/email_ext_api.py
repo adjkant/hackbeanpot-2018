@@ -4,74 +4,57 @@ from flask_api import status
 
 from app.api.utils import get_logged_in_user, validate_json, serialize_all
 from app.api.database import session_manager
-import app.api.database.ReviewQueries as ReviewQueries
+import app.api.database.EmailExtQueries as EmailExtQueries
 
-review_api = Blueprint('review_api', __name__)
+email_ext_api = Blueprint('email_ext_api', __name__)
 
-@review_api.route('/create', methods=['POST'])
-@validate_json(['job_id', 'job_type','duration', 'location'])
-def create_review():
+@email_ext_api.route('/create', methods=['POST'])
+@validate_json(['domain', 'school_id'])
+def create_email_ext():
   db = session_manager.new_session()
   body = request.get_json()
 
   user = get_logged_in_user(db, request)
   if user:
-    body['uid'] = user.id
-    body['school_id'] = user.school_id
-
-    if ReviewQueries.create_review(db, body):
-        return jsonify(success=True), status.HTTP_200_OK
+    if EmailExtQueries.create_email_ext(db, body):
+        return "", status.HTTP_200_OK
     else:
-        return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+        return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
 
-@review_api.route('/edit', methods=['POST'])
-def edit_review():
+@email_ext_api.route('/<int:email_ext_id>/delete', methods=['DELETE'])
+def delete_email_ext(email_ext_id):
   db = session_manager.new_session()
   body = request.get_json()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
-  if ReviewQueries.edit_review(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
+  if EmailExtQueries.delete_email_ext(db, body, email_ext_id):
+    return "", status.HTTP_200_OK
   else:
-    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "", status.HTTP_400_BAD_REQUEST
 
-@review_api.route('/delete', methods=['DELETE'])
-def delete_review():
-  db = session_manager.new_session()
-  body = request.get_json()
-  user = get_logged_in_user(db, request)
-  if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
-
-  if ReviewQueries.delete_review(db, body):
-    return jsonify(success=True), status.HTTP_200_OK
-  else:
-    return jsonify(success=False), status.HTTP_400_BAD_REQUEST
-
-@review_api.route('/<int:review_id>', methods=['GET'])
-def get_review(review_id):
+@email_ext_api.route('/<int:school_id>', methods=['GET'])
+def get_email_ext(school_id):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
-  review = ReviewQueries.get_review(db, review_id)
-  if review:
-    return jsonify(review), status.HTTP_200_OK
+  email_exts = EmailExtQueries.get_email_exts(db, school_id)
+  if email_exts:
+    return jsonify(serialize_all(email_exts)), status.HTTP_200_OK
 
-@review_api.route('/select', methods=['GET'])
-def get_filtered_reviews():
+@email_ext_api.route('/find/<domain>', methods=['GET'])
+def get_school(domain):
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
+    return "", status.HTTP_401_UNAUTHORIZED
 
-  reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
-  if reviews == False:
-      return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
-  return jsonify(serialize_all(reviews)), status.HTTP_200_OK
+  email_ext = EmailExtQueries.get_email_from_ext(db, domain)
+  if email_ext:
+    return jsonify(email_ext.serialize), status.HTTP_200_OK

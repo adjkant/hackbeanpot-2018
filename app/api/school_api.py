@@ -45,3 +45,5 @@ def get_school(school_id):
   school = SchoolQueries.get_school(db, school_id)
   if school:
     return jsonify(school.serialize), status.HTTP_200_OK
+  else:
+      return "", status.HTTP_404_NOT_FOUND

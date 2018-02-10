@@ -60,3 +60,5 @@ def get_company(company_id):
   company = CompanyQueries.get_company(db, company_id)
   if company:
     return jsonify(company.serialize), status.HTTP_200_OK
+  else:
+    return "", status.HTTP_404_NOT_FOUND

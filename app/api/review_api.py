@@ -63,6 +63,8 @@ def get_review(review_id):
   review = ReviewQueries.get_review(db, review_id)
   if review:
     return jsonify(review), status.HTTP_200_OK
+  else:
+    return "", status.HTTP_404_NOT_FOUND
 
 @review_api.route('/select', methods=['GET'])
 def get_filtered_reviews():
