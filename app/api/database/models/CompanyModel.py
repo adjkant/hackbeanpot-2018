@@ -12,14 +12,14 @@ class Company(Base):
 
   website = Column(String(80), nullable=True)
 
-  def __init__(self, name, website):
+  def __init__(self, name, website=None):
     self.name = name
     self.website = website
 
   @property
   def serialize(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'website': self.website
-    }
+    data = {'id': self.id,
+            'name': self.name}
+    if self.website is not None:
+      data['website'] = self.website
+    return data

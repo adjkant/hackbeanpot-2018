@@ -66,3 +66,6 @@ def get_session(db, cookies):
     return None
 
   return session
+
+def serialize_all(collection):
+  return [i.serialize for i in collection]
