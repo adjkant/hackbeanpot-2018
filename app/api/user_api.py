@@ -9,11 +9,14 @@ from app.api.database import session_manager
 
 from flask import redirect, url_for
 
-from app import app
+from app.api.database.models.UserModel import User
 
-from models.UserModel import User
+import app.api.database.UserQueries
+import app.api.database.SessionQueries
 
-@user_api.route('/user/create', methods=['POST'])
+user_api = Blueprint("user_api", __name__)
+
+@user_api.route('/create', methods=['POST'])
 @validate_json(['first', 'last', 'email', 'password', 'school_id'])
 def create_user():
   db = session_manager.new_session()
@@ -33,7 +36,7 @@ def create_user():
     else:
       return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/user/<int:user_id>/edit', methods=['PUT'])
+@user_api.route('/<int:user_id>/edit', methods=['PUT'])
 def edit_user(user_id):
   db = session_manager.new_session()
 
@@ -54,7 +57,7 @@ def edit_user(user_id):
   else:
     return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/user/<int:user_id>/delete', methods=['DELETE'])
+@user_api.route('/<int:user_id>/delete', methods=['DELETE'])
 def delete_user(user_id):
   db = session_manager.new_session()
 
@@ -70,10 +73,10 @@ def delete_user(user_id):
 
   if success:
     return status.HTTP_200_OK
-  else
+  else:
     return RESPONSE_DATABASE_ERROR
 
-@user_api.route('/user/<int:user_id>', methods=['GET'])
+@user_api.route('/<int:user_id>', methods=['GET'])
 def get_user(user_id):
   db = session_manager.new_session()
 
@@ -89,9 +92,9 @@ def get_user(user_id):
   if not user:
     return jsonify(dict(success=False, error='User not found')), status.HTTP_404_NOT_FOUND
   else:
-    return jsonify(dict(success=True, body=serialize(user))), status.HTTP_200_OK
+    return jsonify(dict(success=True, body=user.serialize())), status.HTTP_200_OK
 
-@user_api.route('/user/login', methods=['POST'])
+@user_api.route('/login', methods=['POST'])
 @validate_json(['email', 'password'])
 def login_user():
   db = session_manager.new_session()
@@ -109,7 +112,7 @@ def login_user():
   response.set_cookie('sessionToken', session.token)
   return response, status.HTTP_200_OK
 
-@user_api.route('/user/logout', methods=['POST'])
+@user_api.route('/logout', methods=['POST'])
 def logout_user():
   db = session_manager.new_session()
   session = get_session(db, request.cookies)
@@ -124,7 +127,7 @@ def logout_user():
 
   return response
 
-@user_api.route('/user/login/check', methods=['POST'])
+@user_api.route('/login/check', methods=['POST'])
 def check_login():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)

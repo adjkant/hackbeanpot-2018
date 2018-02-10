@@ -53,3 +53,14 @@ def login_user_utility(email, password):
 
   # Return session
   return SessionQueries.create_session(db, user.id)
+
+def get_session(db, cookies):
+  if 'sessionToken' not in cookies:
+    return None
+
+  session = SessionQueries.session_by_token(db, cookies['sessionToken'])
+
+  if not session:
+    return None
+
+  return session

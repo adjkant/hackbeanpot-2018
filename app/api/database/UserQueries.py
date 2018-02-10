@@ -35,7 +35,7 @@ def edit_user(db, user_id, body):
   if not user:
     return False
 
-  new_email = body.get('email'):
+  new_email = body.get('email')
   new_first = body.get('first')
   new_last = body.get('last')
   new_school = body.get('school_id')
