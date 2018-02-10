@@ -39,15 +39,14 @@
           password: this.login_password
         };
 
-        instance.post('/user/login', loginInfo, {withCredentials: true})
+        instance.post('/user/login', loginInfo, { withCredentials: true })
           .then(response => {
-            router.push("home");
+            window.location = '/#/home';
           })
           .catch(error => {
             this.login_password = '';
             this.login_email = '';
           });
-
 
       }
     }

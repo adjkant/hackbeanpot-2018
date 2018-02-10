@@ -2,12 +2,19 @@
   <div class="menu">
     <div class="title">Intern Up</div>
     <div class="icons">
-      <span v-if="$cookies.get('sessionToken')">Test</span>
-      <router-link to="home"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-      <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
-      <router-link to="search"><i class="fa fa-search" aria-hidden="true"></i></router-link>
-      <router-link to="profile"><i class="fa fa-user" aria-hidden="true"></i></router-link>
-      <a href="#"><a v-on:click="logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a></a>
+      <span v-if="!$cookies.get('sessionToken')">
+        <router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
+        <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
+        <router-link to="login"><i class="fa fa-user" aria-hidden="true"></i></router-link>
+      </span>
+
+      <span v-if="$cookies.get('sessionToken')">
+        <router-link to="home"><i class="fa fa-home" aria-hidden="true"></i></router-link>
+        <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
+        <router-link to="search"><i class="fa fa-search" aria-hidden="true"></i></router-link>
+        <router-link to="profile"><i class="fa fa-user" aria-hidden="true"></i></router-link>
+        <a href="#"><a v-on:click="logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a></a>
+      </span>
     </div>
   </div>
 </template>
@@ -58,11 +65,11 @@
         instance.post('/user/logout', {}, {withCredentials: true})
           .then(response => {
             console.log('Logged out');
-            router.push("/");
+            window.location = '/';
           })
           .catch(error => {
             console.log(error);
-            router.push("/");
+            //window.location = '/';
           });
       }
     }
