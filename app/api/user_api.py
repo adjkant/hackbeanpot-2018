@@ -23,14 +23,14 @@ def create_user():
   if user_created:
     # Log In User
     session = login_user_utility(db, body['email'], body['password'])
-    response = jsonify(dict(success=True))
+    response = jsonify(success=True)
     response.set_cookie('sessionToken', session.token)
     return response, status.HTTP_200_OK
   else:
     if error == 'Duplicate Field':
       return jsonify(dict(success=False, error=3)), status.HTTP_200_OK
     else:
-      return RESPONSE_DATABASE_ERROR
+      return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/edit', methods=['PUT'])
 def edit_user():
@@ -39,16 +39,14 @@ def edit_user():
   # Validate user editing is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
+    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
   body = request.get_json()
 
-  success = UserQueries.edit_user(db, user.id, body)
-
-  if success:
-    return jsonify(dict(success=True)), status.HTTP_200_OK
+  if UserQueries.edit_user(db, user.id, body):
+    return jsonify(success=True), status.HTTP_200_OK
   else:
-    return RESPONSE_DATABASE_ERROR
+    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/delete', methods=['DELETE'])
 def delete_user():
@@ -57,14 +55,12 @@ def delete_user():
   # Validate user deleting is current user
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
+    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
-  success = UserQueries.delete_user(db, user.id)
-
-  if success:
-    return status.HTTP_200_OK
+  if UserQueries.delete_user(db, user.id):
+    return jsonify(success=True), status.HTTP_200_OK
   else:
-    return RESPONSE_DATABASE_ERROR
+    return jsonify(success=False), status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @user_api.route('/get', methods=['GET'])
 def get_user():
@@ -72,14 +68,14 @@ def get_user():
 
   user = get_logged_in_user(db, request)
   if not user:
-    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
+    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
   user = UserQueries.get_user(db, user.id)
 
   if not user:
-    return jsonify(dict(success=False, error='User not found')), status.HTTP_404_NOT_FOUND
+    return jsonify(success=False), status.HTTP_404_NOT_FOUND
   else:
-    return jsonify(dict(success=True, body=user.serialize())), status.HTTP_200_OK
+    return jsonify(user.serialize()), status.HTTP_200_OK
 
 @user_api.route('/login', methods=['POST'])
 @validate_json(['email', 'password'])
@@ -92,10 +88,10 @@ def login_user():
 
   # Bad Email / Password
   if not session:
-    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
+    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
 
   # Create and send response
-  response = jsonify(dict(success=True))
+  response = jsonify(success=True)
   response.set_cookie('sessionToken', session.token)
   return response, status.HTTP_200_OK
 
@@ -119,6 +115,6 @@ def check_login():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
   if user:
-    return jsonify(dict(success=True)), status.HTTP_200_OK
+    return jsonify(success=True), status.HTTP_200_OK
   else:
-    return jsonify('User Not Logged In'), status.HTTP_401_UNAUTHORIZED
+    return jsonify(success=False), status.HTTP_401_UNAUTHORIZED
