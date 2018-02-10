@@ -1,19 +1,15 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.database.models.ReviewModel import Review
+from app.api.database.models.JobModel import Job
 
 
-def create_review(db, body):
-  uid = body['uid']
-  school_id = body['school_id']
-  job_id = body['job_id']
-  job_type = body['job_type']
-  duration = body['duration']
-  location = body['location']
-  review = Review(uid, school_id, job_id, job_type, duration, location)
+def create_job(db, body):
+  title = body['title']
+  company_id = body['company_id']
+  job = Job(title, company_id)
 
   try:
-    db.add(review)
+    db.add(job)
     db.commit()
   except SQLAlchemyError:
     db.rollback()
@@ -21,39 +17,16 @@ def create_review(db, body):
 
   return True
 
-def edit_review(db, body):
-  review_id = body.pop('review_id')
-  q = db.query(Review).filter(Review.id == review_id).first()
+def delete_job(db, body):
   try:
-    for key, value in body.items():
-      q.__setattr__(key, value)
+    db.query(Job).filter(Job.id == body['job_id']).delete()
     db.commit()
   except SQLAlchemyError:
     db.rollback()
     return False
   return True
 
-def delete_review(db, body):
-  try:
-    db.query(Review).filter(Review.id == body['review_id']).delete()
-    db.commit()
-  except SQLAlchemyError:
-    db.rollback()
-    return False
-  return True
-
-def get_review_filtered(db, filters, user_id):
-  q = db.query(Review)
-
-  for key, value in filters.items():
-    if key == 'user_id' and int(value) != int(user_id):
-        print('User id: ', user_id)
-        print('Value: ', value)
-        return False
-    q = q.filter(getattr(Review, key) == value)
-  return q
-
-def get_review(db, review_id):
-  return db.query(Review).filter(Review.id == review_id).first()
+def get_job(db, job_id):
+  return db.query(Job).filter(job.id == job_id).first()
 
 
