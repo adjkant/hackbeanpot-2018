@@ -1,6 +1,7 @@
 // Basics
 import Vue from 'vue'
 import Router from 'vue-router'
+import axios from 'axios';
 
 // Pages
 import Splash from '@/components/pages/Splash'
@@ -78,7 +79,24 @@ export default new Router({
 })
 
 function requireAuth (to, from, next) {
-  next({
-    path: from.fullPath
+  let instance = axios.create({
+    baseURL: 'http://localhost:5000/api/'
   });
+
+  let thing = {
+    a: "a"
+  };
+
+  instance.post('/user/login/check', thing, {withCredentials: true})
+    .then(response => {
+      next();
+    })
+    .catch(error => {
+      next({
+        path: from.fullPath
+      });
+    });
+
+
+
 }

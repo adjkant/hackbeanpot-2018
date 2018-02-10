@@ -12,7 +12,7 @@ from app.api.user_api import user_api
 
 # App Declaration
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.secret_key = 'Hackbeanpot 2018'
 
