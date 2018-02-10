@@ -1,4 +1,4 @@
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from app.api.database.models.UserModel import User
 
@@ -11,7 +11,7 @@ def user_by_credentials(db, email, password):
   return q
 
 def create_user(db, body):
-  new_user = User(body['email'], 
+  new_user = User(body['email'],
           body['password'],
           body['first'],
           body['last'],
@@ -35,17 +35,8 @@ def edit_user(db, user_id, body):
   if not user:
     return False
 
-  new_email = body.get('email')
-  new_first = body.get('first')
-  new_last = body.get('last')
-  new_school = body.get('school_id')
-  new_password = body.get('password')
-
-  user.email = new_email if new_email else user.email
-  user.first = new_first if new_email else user.first
-  user.last = new_last if new_last else user.last
-  user.school_id = new_school if new_school else user.school_id
-  user.password = new_password if new_password else user.password
+  for key, value in body.items():
+      setattr(user, key, value)
 
   try:
     db.commit(user)
