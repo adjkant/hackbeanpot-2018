@@ -10,7 +10,7 @@ from app.api.database import session_manager
 from app.api.example_api import example_api
 
 # App Declaration
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 CORS(app)
 
 app.secret_key = 'Hackbeanpot 2018'
