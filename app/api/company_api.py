@@ -9,7 +9,7 @@ import app.api.database.CompanyQueries as CompanyQueries
 company_api = Blueprint('company_api', __name__)
 
 @company_api.route('/create', methods=['POST'])
-@validate_json(['name', 'website'])
+@validate_json(['name'])
 def create_company():
   db = session_manager.new_session()
   body = request.get_json()

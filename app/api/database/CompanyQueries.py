@@ -4,8 +4,8 @@ from app.api.database.models.CompanyModel import Company
 
 def create_company(db, body):
   name = body['name']
-  website = body['website']
-  company = Company(name, website)
+  website = body['website'] if 'website' in body else None
+  company = Company(name, website=website)
 
   try:
     db.add(company)
@@ -41,8 +41,6 @@ def get_company_filtered(db, filters, user_id):
 
   for key, value in filters.items():
     if key == 'user_id' and int(value) != int(user_id):
-        print('User id: ', user_id)
-        print('Value: ', value)
         return False
     q = q.filter(getattr(Company, key) == value)
   return q
