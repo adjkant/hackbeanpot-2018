@@ -4,7 +4,7 @@ from app.api.database.models.ReviewModel import Review
 
 
 def create_review(db, body):
-  uid = body['uid']
+  uid = body['user_id']
   school_id = body['school_id']
   job_id = body['job_id']
   job_type = body['job_type']
@@ -26,7 +26,7 @@ def edit_review(db, body):
   q = db.query(Review).filter(Review.id == review_id).first()
   try:
     for key, value in body.items():
-      q.__setattr__(key, value)
+      setattr(q, key, value)
     db.commit()
   except SQLAlchemyError:
     db.rollback()

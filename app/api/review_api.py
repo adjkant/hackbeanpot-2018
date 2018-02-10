@@ -16,7 +16,7 @@ def create_review():
 
   user = get_logged_in_user(db, request)
   if user:
-    body['uid'] = user.id
+    body['user_id'] = user.id
     body['school_id'] = user.school_id
 
     if ReviewQueries.create_review(db, body):
