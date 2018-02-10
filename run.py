@@ -16,7 +16,7 @@ from app.api.email_ext_api import email_ext_api
 
 # App Declaration
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.secret_key = 'Hackbeanpot 2018'
 

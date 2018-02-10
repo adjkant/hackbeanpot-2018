@@ -61,8 +61,7 @@
 
         console.log(loginInfo);
 
-        instance.post('/user/create',
-                      loginInfo)
+        instance.post('/user/create', loginInfo, {withCredentials: true})
         .then(response => {
           console.log('Got: ' + response.data);
         })

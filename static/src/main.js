@@ -12,7 +12,6 @@ Vue.component('site-footer', Footer);
 
 Vue.config.productionTip = false;
 
-
 new Vue({
   el: '#app',
   router,

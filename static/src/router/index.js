@@ -1,6 +1,10 @@
 // Basics
 import Vue from 'vue'
 import Router from 'vue-router'
+import axios from 'axios';
+
+Vue.use(require('vue-cookies'));
+import VueCookies from 'vue-cookies';
 
 // Pages
 import Splash from '@/components/pages/Splash'
@@ -16,56 +20,96 @@ import Review from '@/components/pages/Review'
 import Page404 from '@/components/pages/Page404'
 
 Vue.use(Router);
+Vue.use(VueCookies);
 
 export default new Router({
   routes: [
     {
       path: '/',
+      name: 'splash',
       component: Splash
     },
     {
       path: '/about',
+      name: 'about',
       component: About
     },
     {
       path: '/login',
+      name: 'login',
       component: Login
     },
     {
       path: '/register',
+      name: 'register',
       component: Register
     },
     {
       path: '/home',
-      component: Home
+      name: 'home',
+      component: Home,
+      beforeEnter: requireAuth
     },
     {
       path: '/profile',
-      component: Profile
+      name: 'profile',
+      component: Profile,
+      beforeEnter: requireAuth
     },
     {
       path: '/profile/edit',
-      component: ProfileEdit
+      name: 'profile-edit',
+      component: ProfileEdit,
+      beforeEnter: requireAuth
     },
     {
       path: '/search',
-      component: Search
+      name: 'search',
+      component: Search,
+      beforeEnter: requireAuth
     },
     {
       path: '/company/:id',
-      component: Company
+      name: 'company',
+      component: Company,
+      beforeEnter: requireAuth
     },
     {
       path: '/company/:id/:jobId',
-      component: Company
+      name: 'company-job',
+      component: Company,
+      beforeEnter: requireAuth
     },
     {
       path: '/review',
-      component: Review
+      name: 'review',
+      component: Review,
+      beforeEnter: requireAuth
     },
     {
       path: '*',
+      name: '404',
       component: Page404
     }
   ]
 })
+
+function requireAuth (to, from, next) {
+  let instance = axios.create({
+    baseURL: 'http://localhost:5000/api/'
+  });
+
+  let thing = {
+    a: "a"
+  };
+
+  instance.post('/user/login/check', thing, {withCredentials: true})
+    .then(response => {
+      next();
+    })
+    .catch(error => {
+      next({
+        path: from.fullPath
+      });
+    });
+}
