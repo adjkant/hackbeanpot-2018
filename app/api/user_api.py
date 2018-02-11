@@ -68,14 +68,9 @@ def get_user():
 
   user = get_logged_in_user(db, request)
   if not user:
-    return "", status.HTTP_401_UNAUTHORIZED
-
-  user = UserQueries.get_user(db, user.id)
-
-  if not user:
-    return "", status.HTTP_404_NOT_FOUND
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
-    return jsonify(user.serialize()), status.HTTP_200_OK
+    return jsonify(user.serialize), status.HTTP_200_OK
 
 @user_api.route('/login', methods=['POST'])
 @validate_json(['email', 'password'])
