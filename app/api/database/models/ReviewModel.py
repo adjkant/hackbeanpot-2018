@@ -22,7 +22,7 @@ class Review(Base):
   job = relationship('Job', foreign_keys='Review.job_id')
   job_type = Column(Enum('co-op', 'internship', 'reu', 'remote', name='job_types'))
 
-  company_id = Column(Integer, ForeignKey('companys.id'))
+  company_id = Column(Integer, ForeignKey('companies.id'))
   company = relationship('Company', foreign_keys='Review.company_id')
 
   duration = Column(Integer)
