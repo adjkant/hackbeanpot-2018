@@ -1,17 +1,39 @@
 <template>
-  <b-media right-align slot="aside" width="80" vertical-align="center">
-    <svg height="100" width="100">
-  <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" v-bind:fill="circle_color" />
-  <text x="50%" y="50%" font-size="2em" stroke="#51c5cf" stroke-width="0px" dy=".15em" text-anchor="middle" alignment-baseline="middle"> {{ rating }} </text>
-</svg>
-    <h5 class="mt-0 mb-1">{{ company }}</h5>
-    {{ job_type }}
-    {{ job_title }}
-  </b-media>
+  <b-card>
+    <b-button class="btn btn-warning btn-circle btn-xl">{{ value.avg_rating }} </b-button>
+    {{ value.job_type }}
+    {{ value.location }}
+</b-card>
 </template>
 
 
 <style scoped>
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
+.rating_circle {
+  color: black;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
 </style>
 
 <script>
@@ -20,8 +42,12 @@
     props: [
       'company',
       'rating',
-      'job_type',
-      'job_title',
+      'jtype',
+      'jtitle',
+      'reviewobj',
+      'key',
+      'value',
+      'review'
     ],
     created: function () {
       this.circle_color = "#ffffff";

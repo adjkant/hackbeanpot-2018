@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="large_card">
     <div v-show="stage == 1">
       Company
       <input v-model="review.company">
@@ -79,6 +79,55 @@
 <div class="med">{{ question_cur["med"] }}</div>
 
 <style scoped>
+  @import '~bootstrap/dist/css/bootstrap.css';
+  @import '~bootstrap-vue/dist/bootstrap-vue.css';
+  .round {
+    border-radius: 10px;
+  }
+  .green_border {
+    border-color: #38f8a6;
+  }
+  .submit_button {
+    background-color: #19ab69;
+    border-width: 0px;
+  }
+  .large_card {
+    font-size: 1.5em;
+    color: #333333;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    text-align: center;
+  }
+  .fixed_center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .login_form {
+    width: 500px;
+    padding: 10% 20%;
+  }
+  .no_account {
+    text-align: center;
+    font-style: italic;
+    color: #ffffff;
+    font-size: 1.3em;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    margin-top: 10px;
+    width: inherit;
+  }
+  .link {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: #38f8a6;
+  }
+  .link:hover {
+    color: #19ab69;
+    text-decoration: underline;
+    text-decoration-color: #ffffff;
+  }
+
 
   .ratings {
     margin: 0px 50px;
