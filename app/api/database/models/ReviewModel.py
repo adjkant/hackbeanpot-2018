@@ -69,6 +69,10 @@ class Review(Base):
 
   @property
   def serialize(self):
+    avg = float(self.culture) + self.inclusivity + self.facilities
+    avg += self.perks + self.workload + self.opps + self.mentors + self.purpose
+    avg /= 8.0
+
     return {
       'id': self.id,
       'school_id': self.school_id,
@@ -89,4 +93,5 @@ class Review(Base):
       'min_visible': self.min_visible,
       'show_immediate': self.show_immediate,
       'review_text': self.review_text,
+      'avg_rating': avg
     }
