@@ -27,6 +27,6 @@ def delete_job(db, body):
   return True
 
 def get_job(db, job_id):
-  return db.query(Job).filter(job.id == job_id).first()
+  return db.query(Job).filter(Job.id == job_id).first()
 
 

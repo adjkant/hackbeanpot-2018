@@ -9,7 +9,7 @@ import app.api.database.ReviewQueries as ReviewQueries
 review_api = Blueprint('review_api', __name__)
 
 @review_api.route('/create', methods=['POST'])
-@validate_json(['job_id', 'job_type','duration', 'location'])
+@validate_json(['job_id', 'job_type', 'duration', 'location'])
 def create_review():
   db = session_manager.new_session()
   body = request.get_json()
@@ -74,6 +74,6 @@ def get_filtered_reviews():
     return "", status.HTTP_401_UNAUTHORIZED
 
   reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
-  if reviews == False:
+  if not reviews:
     return "", status.HTTP_401_UNAUTHORIZED
   return jsonify(serialize_all(reviews)), status.HTTP_200_OK

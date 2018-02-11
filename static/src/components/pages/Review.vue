@@ -10,7 +10,19 @@
       <input v-model="position">
       <span v-on:click="nextStage">Select Position</span>
     </div>
-    <div class="ratings" v-if="stage == 3">
+    <div v-show="stage == 3">
+      <span v-on:click="prevStage">Back</span>
+      City
+      <input v-model="city">
+      <span v-on:click="nextStage">Enter City</span>
+    </div>
+    <div v-show="stage == 4">
+      <span v-on:click="prevStage">Back</span>
+      Job Type
+      <input v-model="job_type">
+      <span v-on:click="nextStage">Confirm</span>
+    </div>
+    <div class="ratings" v-if="stage == 5">
 
       <div class="progress">
         TODO
@@ -44,22 +56,22 @@
       </div>
 
     </div>
-    <div v-show="stage == 4">
+    <div v-show="stage == 6">
       <span v-on:click="prevStage">Back to Ratings</span>
       <textarea v-model="review"></textarea>
       <span v-on:click="nextStage">Submit Review</span>
     </div>
-    <div v-show="stage == 5">
+    <div v-show="stage == 7">
       <span v-on:click="prevStage">Back to Review</span>
       Privacy
       <span v-on:click="nextStage">Submit Privacy</span>
     </div>
-    <div v-show="stage == 6">
+    <div v-show="stage == 8">
       <span v-on:click="prevStage">Go Back</span>
       Finalize
       <span v-on:click="submitReview">Finalize!</span>
     </div>
-    <div v-show="stage == 7">
+    <div v-show="stage == 9">
       Done!
     </div>
   </div>
@@ -144,8 +156,12 @@
 </style>
 
 <script>
-
+  import axios from 'axios';
   import vueSlider from 'vue-slider-component';
+
+  let instance = axios.create({
+    baseURL: 'http://localhost:5000/api/'
+  });
 
   let premade_questions = [
     {
@@ -213,15 +229,20 @@
     },
   ];
 
-    export default {
+  export default {
     name: '',
     components: {
       vueSlider
+    },
+    before() {
+      console.log("TODO Company and Review Load");
     },
     data: function() {
       return {
         company: '',
         position: '',
+        city: '',
+        job_type: '',
         rat_value: 50,
         options: {
           width: "100%",
@@ -277,9 +298,21 @@
       prevStage() {
         this.stage -= 1;
       },
+
       submitReview() {
-        console.log('Will try to submit here');
-        this.stage += 1;
+        let review = {
+
+        };
+
+        instance.post('/review/create', review, { withCredentials: true })
+          .then(response => {
+            this.results = response.data;
+            console.log(response);
+            this.stage += 1;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     }
 
