@@ -10,6 +10,7 @@ from flask import redirect
 import app.api.database.UserQueries as UserQueries
 import app.api.database.SessionQueries as SessionQueries
 import app.api.database.SchoolQueries as SchoolQueries
+import app.api.database.ReviewQueries as ReviewQueries
 import app.api.database.EmailExtQueries as EmailExtQueries
 
 user_api = Blueprint("user_api", __name__)
@@ -86,6 +87,21 @@ def get_user():
     return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
     return jsonify(user.serialize), status.HTTP_200_OK
+
+@user_api.route('/reviews', methods=['GET'])
+def get_reviews():
+  db = session_manager.new_session()
+
+  user = get_logged_in_user(db, request)
+  if not user:
+    return "", status.HTTP_401_UNAUTHORIZED
+  else:
+    reviews = ReviewQueries.get_reviews_filtered(db, {}, user.id)
+    if reviews:
+      return jsonify(serialize_all(reviews)), status.HTTP_200_OK
+    else:
+      return "", status.HTTP_404_NOT_FOUND
+
 
 @user_api.route('/login', methods=['POST'])
 @validate_json(['email', 'password'])
