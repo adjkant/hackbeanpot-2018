@@ -54,21 +54,25 @@
     </div>
     <div v-show="stage == 3">
       <b-btn class="submit_button" v-on:click="prevStage">Back to Ratings</b-btn>
+      <p>Now write your review. Don’t forget to keep your ratings in mind.</p>
       <textarea v-model="review.text"></textarea>
       <b-btn class="submit_button" v-on:click="nextStage">Submit Review</b-btn>
     </div>
     <div v-show="stage == 4">
+
+      <p>We won’t make your reviews visible until you tell us to. Choose how many reviews you would like to be posted before yours becomes visible.</p>
       <b-btn class="submit_button" v-on:click="prevStage">Back to Review</b-btn>
       Privacy: Minimum People
       <input v-model="review.min_show">
       <b-btn class="submit_button" v-on:click="nextStage">Save Privacy</b-btn>
     </div>
     <div v-show="stage == 5">
+      <p>Last chance to change anything!</p>
       <b-btn class="submit_button" v-on:click="prevStage">Go Back</b-btn>
       <b-btn class="submit_button" v-on:click="submitReview">Submit</b-btn>
     </div>
     <div v-show="stage == 6">
-      Done!
+      Yay! You did it!
     </div>
   </div>
 </template>
