@@ -8,6 +8,8 @@ import app.api.database.ReviewQueries as ReviewQueries
 import app.api.database.CompanyQueries as CompanyQueries
 import app.api.database.JobQueries as JobQueries
 
+import app.api.database.UserQueries as UserQueries
+
 review_api = Blueprint('review_api', __name__)
 
 def get_or_create_company(db, company_name):
@@ -46,6 +48,7 @@ def create_review():
   body = request.get_json()
 
   user = get_logged_in_user(db, request)
+  # user = UserQueries.user_by_credentials(db, "bob@neu.edu", "bob")
   if user:
     body['user_id'] = user.id
     body['school_id'] = user.school_id
@@ -109,8 +112,13 @@ def get_review(review_id):
 def get_filtered_reviews():
   db = session_manager.new_session()
   user = get_logged_in_user(db, request)
+  # user = UserQueries.user_by_credentials(db, "bob@neu.edu", "bob")
   if not user:
     return "", status.HTTP_401_UNAUTHORIZED
 
   reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
+
+  print(reviews)
+  if not reviews:
+    return "", status.HTTP_401_UNAUTHORIZED
   return jsonify(serialize_all(reviews)), status.HTTP_200_OK

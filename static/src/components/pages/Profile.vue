@@ -1,23 +1,16 @@
-<!--<template>-->
-  <!--<div>-->
-    <!--<h1>Profile</h1>-->
-    <!--<h2>Welcome, {{first}} {{last}}</h2>-->
-    <!--<br/>-->
-    <!--{{school}}-->
-    <!--<br/>-->
-    <!--Click <router-link to="profile/edit">here</router-link> to edit account details.-->
-    <!--<div v-for="review in reviews">{{review.company}}</div>-->
-    <!--<review-card v-for="review in reviews" :company="review.company" :rating="review.rating" :job_type="review.job_type" :job_title="review.job"></review-card>-->
-  <!--</div>-->
-<!--</template>-->
 
 <template>
-<b-container>
+<b-container class="large_card">
     <b-row>
       <b-col cols="4">
+        Hello {{ first }} {{ last }}!
+        <br>
+        {{ school }}
       </b-col>
       <b-col cols="8">
-            <review-card v-for="review in reviews" :company="review.company" :rating="review.avg_rating" :job_type="review.job_type" :job_title="review.job"></review-card>
+        <b-card-group deck>
+            <review-card v-for="(value, key) in reviews" v-bind:review="review" v-bind:value="value" v-bind:key="key"></review-card>
+          </b-card-group>
       </b-col>
 
     </b-row>
@@ -25,7 +18,12 @@
 </template>
 
 <style scoped>
-
+  .large_card {
+    font-size: 1.5em;
+    color: #333333;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    text-align: center;
+  }
 </style>
 
 <script>
@@ -41,6 +39,7 @@
         last: "",
         school: "",
         school_id: "",
+        reviews: [],
         backend: axios.create({baseURL: "http://localhost:5000/api/"})
       }
     },
@@ -70,8 +69,14 @@
       this.backend.get("user/reviews", {withCredentials: true})
       .then(response => {
         console.log(response);
-        this.reviews = response.data;
+
+        this.$set(this, 'reviews', response.data)
+        console.log(this.reviews)
       })
+      .catch(error => {
+        // TODO: Something
+        console.log(error);
+      });
     },
   };
 
