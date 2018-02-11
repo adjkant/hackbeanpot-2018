@@ -9,7 +9,6 @@ class Company(Base):
   id = Column(Integer, primary_key=True, autoincrement=True)
 
   name = Column(String(80))
-
   website = Column(String(80), nullable=True)
 
   def __init__(self, name, website=None):

@@ -96,11 +96,8 @@ def get_reviews():
   if not user:
     return "", status.HTTP_401_UNAUTHORIZED
   else:
-    reviews = ReviewQueries.get_reviews_filtered(db, {}, user.id)
-    if reviews:
-      return jsonify(serialize_all(reviews)), status.HTTP_200_OK
-    else:
-      return "", status.HTTP_404_NOT_FOUND
+    reviews = ReviewQueries.get_review_filtered(db, {}, user.id)
+    return jsonify(serialize_all(reviews)), status.HTTP_200_OK
 
 
 @user_api.route('/login', methods=['POST'])
