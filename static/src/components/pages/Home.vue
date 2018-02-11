@@ -10,8 +10,8 @@
     <p>Privacy is key to this process. Users remain anonymous, and reviews aren’t posted until a minimum number of reviews (set by the user) become available.</p>
 
     <p>So go out there! Gain experience! Just don’t forget to share your insights when you return.</p>
-    <router-link to="login"><b-btn to="register">Sign Up</b-btn></router-link>
-    <router-link to="register"><b-btn class="submit_button" to="login">Log In</b-btn></router-link>
+    <router-link to="register"><b-btn to="register">Sign Up</b-btn></router-link>
+    <router-link to="login"><b-btn class="submit_button" to="login">Log In</b-btn></router-link>
   </div>
 </template>
 
