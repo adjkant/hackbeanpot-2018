@@ -61,7 +61,6 @@
           </div>
             <b-btn class="submit_button" v-on:click="submitEdit">Save Changes</b-btn>
           </b-form>
-        
         </b-card>
     </b-row>
   </b-container>
@@ -126,16 +125,16 @@
   export default {
     name: "profile-edit",
     data: function () {
-        return {
-          email: "",
-          first: "",
-          last: "",
-          password1: "",
-          password2: "",
-          showPass: false,
-          buttonMsg: "Change Password",
-          backend: axios.create({baseURL: "http://localhost:5000/api/"})
-        }
+      return {
+        email: "",
+        first: "",
+        last: "",
+        password1: "",
+        password2: "",
+        showPass: false,
+        buttonMsg: "Change Password",
+        backend: axios.create({baseURL: "http://localhost:5000/api/"})
+      }
     },
     created: function () {
       this.backend.get("user/get", {withCredentials: true})
