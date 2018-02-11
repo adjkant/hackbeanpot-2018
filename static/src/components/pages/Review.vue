@@ -18,7 +18,7 @@
         <option value="reu">REU</option>
         <option value="remote">Remote</option>
       </select><br><br>
-      <span v-on:click="nextStage">Start Review</span>
+      <b-btn class="submit_button" v-on:click="nextStage">Submit</b-btn>
         </b-form>
     </div>
 
@@ -64,9 +64,8 @@
       <span v-on:click="nextStage">Submit Privacy</span>
     </div>
     <div v-show="stage == 5">
-      <span v-on:click="prevStage">Go Back</span>
-      Finalize
-      <span v-on:click="submitReview">Finalize!</span>
+      <b-btn class="submit_button" v-on:click="prevStage">Go Back</b-btn>
+      <b-btn class="submit_button" v-on:click="submitReview">Submit</b-btn>
     </div>
     <div v-show="stage == 6">
       Done!
