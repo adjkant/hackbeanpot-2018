@@ -26,3 +26,6 @@ def delete_school(db, school_id):
 
 def get_school(db, school_id):
   return db.query(School).filter(School.id == school_id).first()
+
+def get_by_name(db, school):
+  return db.query(School).filter(School.name == school).first()
