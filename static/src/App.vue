@@ -24,7 +24,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    background-color: #ececec;
+    background-color: #C4C4C4;
     position: absolute;
     top: 0;
     left: 0;

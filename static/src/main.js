@@ -7,6 +7,10 @@ import router from './router'
 import Menu from './components/global/Menu.vue'
 import Footer from './components/global/Footer.vue'
 
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue);
+
 Vue.component('site-menu', Menu);
 Vue.component('site-footer', Footer);
 
