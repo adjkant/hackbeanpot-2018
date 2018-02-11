@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--<template>-->
   <!--<div>-->
     <!--<h1>Profile</h1>-->
@@ -41,6 +42,7 @@
         last: "",
         school: "",
         school_id: "",
+        reviews: [],
         backend: axios.create({baseURL: "http://localhost:5000/api/"})
       }
     },
@@ -70,8 +72,13 @@
       this.backend.get("user/reviews", {withCredentials: true})
       .then(response => {
         console.log(response);
+
         this.reviews = response.data;
       })
+      .catch(error => {
+        // TODO: Something
+        console.log(error);
+      });
     },
   };
 
