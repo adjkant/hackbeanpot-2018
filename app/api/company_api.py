@@ -50,6 +50,16 @@ def delete_company():
   else:
     return "", status.HTTP_400_BAD_REQUEST
 
+@company_api.route('/all', methods=['GET'])
+def get_companies():
+  db = session_manager.new_session()
+  user = get_logged_in_user(db, request)
+  if not user:
+    return "", status.HTTP_401_UNAUTHORIZED
+
+  companies = CompanyQueries.get_company_filtered(db, {}, -1)
+  return jsonify(serialize_all(companies)), status.HTTP_200_OK
+
 @company_api.route('/<int:company_id>', methods=['GET'])
 def get_company(company_id):
   db = session_manager.new_session()

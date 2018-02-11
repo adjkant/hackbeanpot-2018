@@ -1,28 +1,25 @@
 <template>
   <div>
     <div v-show="stage == 1">
-      <input v-model="company">
-      <span v-on:click="nextStage">Select Company</span>
-    </div>
-    <div v-show="stage == 2">
-      <span v-on:click="prevStage">Back</span>
+      Company
+      <input v-model="review.company">
       Position
-      <input v-model="position">
-      <span v-on:click="nextStage">Select Position</span>
-    </div>
-    <div v-show="stage == 3">
-      <span v-on:click="prevStage">Back</span>
+      <input v-model="review.position">
       City
-      <input v-model="city">
-      <span v-on:click="nextStage">Enter City</span>
+      <input v-model="review.city">
+      Duration
+      <input v-model="review.duration">
+      Salary
+      <input v-model="review.salary">
+      <select v-model="review.job_type">
+        <option value="co-op">Co-op</option>
+        <option value="internship">Internship</option>
+        <option value="reu">REU</option>
+        <option value="remote">Remote</option>
+      </select>
+      <span v-on:click="nextStage">Start Review</span>
     </div>
-    <div v-show="stage == 4">
-      <span v-on:click="prevStage">Back</span>
-      Job Type
-      <input v-model="job_type">
-      <span v-on:click="nextStage">Confirm</span>
-    </div>
-    <div class="ratings" v-if="stage == 5">
+    <div class="ratings" v-if="stage == 2">
 
       <div class="progress">
         TODO
@@ -56,22 +53,23 @@
       </div>
 
     </div>
-    <div v-show="stage == 6">
+    <div v-show="stage == 3">
       <span v-on:click="prevStage">Back to Ratings</span>
-      <textarea v-model="review"></textarea>
+      <textarea v-model="review.text"></textarea>
       <span v-on:click="nextStage">Submit Review</span>
     </div>
-    <div v-show="stage == 7">
+    <div v-show="stage == 4">
       <span v-on:click="prevStage">Back to Review</span>
-      Privacy
+      Privacy: Minimum People
+      <input v-model="review.min_show">
       <span v-on:click="nextStage">Submit Privacy</span>
     </div>
-    <div v-show="stage == 8">
+    <div v-show="stage == 5">
       <span v-on:click="prevStage">Go Back</span>
       Finalize
       <span v-on:click="submitReview">Finalize!</span>
     </div>
-    <div v-show="stage == 9">
+    <div v-show="stage == 6">
       Done!
     </div>
   </div>
@@ -234,15 +232,35 @@
     components: {
       vueSlider
     },
-    before() {
+    created() {
       console.log("TODO Company and Review Load");
+      instance.get('/company/all', { withCredentials: true })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      instance.get('/review/select', { withCredentials: true })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     data: function() {
       return {
-        company: '',
-        position: '',
-        city: '',
-        job_type: '',
+        review: {
+          company: 'a',
+          position: 'b',
+          city: 'c',
+          job_type: 'internship',
+          text: 'test',
+          min_show: 1,
+          duration: 2,
+          salary: 5.5,
+        },
         rat_value: 50,
         options: {
           width: "100%",
@@ -300,14 +318,24 @@
       },
 
       submitReview() {
-        let review = {
-
+        let reviewJSON = {
+          job_type: this.review.job_type,
+          duration: this.review.duration,
+          location: this.review.city,
+          salary: this.review.salary,
+          ratings: this.answers,
+          title: this.review.position,
+          company: this.review.company,
+          min_visible: this.review.min_show,
+          show_immediate: true,
+          review_text: this.review.text
         };
 
-        instance.post('/review/create', review, { withCredentials: true })
+        console.log(reviewJSON);
+
+        instance.post('/review/create', reviewJSON, { withCredentials: true })
           .then(response => {
             this.results = response.data;
-            console.log(response);
             this.stage += 1;
           })
           .catch(error => {

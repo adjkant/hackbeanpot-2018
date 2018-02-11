@@ -30,6 +30,8 @@ def create_review(db, body):
                   show_immediate,
                   review_text)
 
+  print(review)
+
   try:
     db.add(review)
     db.commit()

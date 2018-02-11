@@ -53,14 +53,15 @@ def create_review():
     if 'company_id' not in body:
       company_id = get_or_create_company(db, body['company'])
       body['company_id'] = company_id
+      
     if 'job_id' not in body:
-      job_id = get_or_create_job(db, body['title'], company_id)
+      job_id = get_or_create_job(db, body['title'], body['company_id'])
       body['job_id'] = job_id
 
     if ReviewQueries.create_review(db, body):
-        return "", status.HTTP_200_OK
+        return "yay!", status.HTTP_200_OK
     else:
-        return "", status.HTTP_500_INTERNAL_SERVER_ERROR
+        return "Not right format", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
     return "", status.HTTP_401_UNAUTHORIZED
 
@@ -112,6 +113,4 @@ def get_filtered_reviews():
     return "", status.HTTP_401_UNAUTHORIZED
 
   reviews = ReviewQueries.get_review_filtered(db, request.args, user.id)
-  if not reviews:
-    return "", status.HTTP_401_UNAUTHORIZED
   return jsonify(serialize_all(reviews)), status.HTTP_200_OK

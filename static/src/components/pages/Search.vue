@@ -7,7 +7,11 @@
     <label for='title'>Job Title:</label>
     <input v-model="title" id="title">
     <p>Search Now Button Here!</p>
-    <p>{{ results }}</p>
+
+    <p v-for="review in results">
+      {{ review['job_type'] }}
+    </p>
+
   </div>
 </template>
 
@@ -44,27 +48,3 @@
   };
 
 </script>
-
-
-+import axios from 'axios';
-+var instance = axios.create({
-+  baseURL: 'http://127.0.0.1:5000/api/',
-+  timeout: 1000,
-+});
-+
-+export default {
-+  name: 'HelloWorld',
-+  data() {
-+    return {msg: ''};
-+  },
-+
-+  created() {
-+    instance.get('test/test')
-+    .then(response => {
-+      this.msg = response.data;
-+    })
-+    .error(response => {
-+      console.log(response);
-+    })
-+
-+  }

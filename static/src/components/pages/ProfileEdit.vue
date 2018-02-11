@@ -139,7 +139,7 @@
     created: function () {
       this.backend.get("user/get", {withCredentials: true})
       .then(response => {
-        console.log(response)
+        console.log(response);
         this.email = response.data["email"];
         this.last = response.data["last"];
         this.first = response.data["first"];
@@ -157,8 +157,7 @@
           email: this.email,
           first: this.first,
           last: this.last,
-          first: this.first,
-        }
+        };
         if (this.showPass) {
           if (this.password1 == this.password2){
             editData["password"] = this.password1;
@@ -167,10 +166,11 @@
             console.log("Passwords don't match!")
           }
         }
-        console.log(editData)
+        console.log(editData);
         this.backend.put("user/edit", editData, {withCredentials: true})
         .then(response => {
-          window.location = "/profile"
+          console.log('trying');
+          router.push("/profile");
         })
         .catch(error => {
           // TODO:actually handle this error
@@ -178,7 +178,7 @@
         })
       },
       togglePass() {
-        this.showPass = !this.showPass
+        this.showPass = !this.showPass;
         if (this.showPass) {
           this.buttonMsg = "Cancel";
         } else {

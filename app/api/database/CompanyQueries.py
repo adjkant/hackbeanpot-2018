@@ -43,7 +43,7 @@ def get_company_filtered(db, filters, user_id):
     if key == 'user_id' and int(value) != int(user_id):
       return False
     q = q.filter(getattr(Company, key) == value)
-  return q
+  return q.all()
 
 def get_by_name(db, name):
   return db.query(Company).filter(Company.name == name).first()

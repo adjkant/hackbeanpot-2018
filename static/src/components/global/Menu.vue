@@ -19,8 +19,8 @@
 </template>
 
 <style scoped>
-  a {
-    color: inherit;
+  a, a:hover, a:visited {
+    color: white;
     text-decoration: None;
   }
   .menu {
