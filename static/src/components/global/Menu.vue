@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <div class="title">Cooperate</div>
+    <div class="title"><router-link to="/">Cooperate</router-link></div>
     <div class="icons">
       <span v-if="!$cookies.get('sessionToken')">
         <router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>

@@ -8,9 +8,9 @@
       <input v-model="review.position">
       City
       <input v-model="review.city">
-      Duration
+      Duration (months)
       <input v-model="review.duration">
-      Salary
+      Salary ($/hr)
       <input v-model="review.salary"><br><br>
       <select v-model="review.job_type">
         <option value="co-op">Co-op</option>
