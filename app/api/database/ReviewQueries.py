@@ -68,7 +68,7 @@ def get_review_filtered(db, filters, user_id):
         print('Value: ', value)
         return False
     q = q.filter(getattr(Review, key) == value)
-  return q
+  return q.all()
 
 def get_review(db, review_id):
   return db.query(Review).filter(Review.id == review_id).first()
