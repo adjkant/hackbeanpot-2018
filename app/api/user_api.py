@@ -9,14 +9,29 @@ from flask import redirect
 
 import app.api.database.UserQueries as UserQueries
 import app.api.database.SessionQueries as SessionQueries
+import app.api.database.SchoolQueries as SchoolQueries
+import app.api.database.EmailExtQueries as EmailExtQueries
 
 user_api = Blueprint("user_api", __name__)
 
 @user_api.route('/create', methods=['POST'])
-@validate_json(['first', 'last', 'email', 'password', 'school_id'])
+@validate_json(['first', 'last', 'email', 'password', 'school'])
 def create_user():
   db = session_manager.new_session()
   body = request.get_json()
+
+  school = SchoolQueries.get_by_name(db, body['school'])
+  if school:
+    body['school_id'] = school.id
+  else:
+    school_info = {'name': body['school']}
+    SchoolQueries.create_school(db, school_info)
+    school = SchoolQueries.get_by_name(db, body['school'])
+    print('=> Created new School: ', school.name)
+    body['school_id'] = school.id
+    ext = {'domain': body['email'].split('@')[1],
+           'school_id': school.id}
+    EmailExtQueries.create_email_ext(db, ext)
 
   user_created, error = UserQueries.create_user(db, body)
 
@@ -68,14 +83,9 @@ def get_user():
 
   user = get_logged_in_user(db, request)
   if not user:
-    return "", status.HTTP_401_UNAUTHORIZED
-
-  user = UserQueries.get_user(db, user.id)
-
-  if not user:
-    return "", status.HTTP_404_NOT_FOUND
+    return "", status.HTTP_500_INTERNAL_SERVER_ERROR
   else:
-    return jsonify(user.serialize()), status.HTTP_200_OK
+    return jsonify(user.serialize), status.HTTP_200_OK
 
 @user_api.route('/login', methods=['POST'])
 @validate_json(['email', 'password'])

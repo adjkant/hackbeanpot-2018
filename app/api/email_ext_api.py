@@ -53,10 +53,6 @@ def get_email_ext(school_id):
 @email_ext_api.route('/find/<domain>', methods=['GET'])
 def get_school(domain):
   db = session_manager.new_session()
-  user = get_logged_in_user(db, request)
-  if not user:
-    return "", status.HTTP_401_UNAUTHORIZED
-
   email_ext = EmailExtQueries.get_email_from_ext(db, domain)
   if email_ext:
     return jsonify(email_ext.serialize), status.HTTP_200_OK

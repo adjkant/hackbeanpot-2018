@@ -39,7 +39,7 @@ def edit_user(db, user_id, body):
       setattr(user, key, value)
 
   try:
-    db.commit(user)
+    db.commit()
   except SQLAlchemyError:
     db.rollback()
     return False
