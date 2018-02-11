@@ -2,6 +2,9 @@
   <div>
     <h1>Profile</h1>
     <h2>Welcome, {{first}} {{last}}</h2>
+    <br/>
+    {{school}}
+    <br/>
     Click <router-link to="profile/edit">here</router-link> to edit account details.
   </div>
 </template>
@@ -21,6 +24,8 @@
         email: "",
         first: "",
         last: "",
+        school: "",
+        school_id: "",
         backend: axios.create({baseURL: "http://localhost:5000/api/"})
       }
     },
@@ -31,8 +36,16 @@
         this.email = response.data["email"];
         this.last = response.data["last"];
         this.first = response.data["first"];
+        this.school_id = response.data["school_id"];
         this.password1 = "";
-        this.password2 = "";
+        this.password2 = ""; 
+        this.backend.get('school/' + this.school_id, {withCredentials: true})
+        .then(response => {
+          this.school = response.data['name'];
+        })
+        .error(error => {
+          console.log(error);
+        });
       })
       .catch(error => {
         // TODO: Something
