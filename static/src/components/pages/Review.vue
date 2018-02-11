@@ -52,27 +52,26 @@
       </div>
 
     </div>
-    <div v-show="stage == 3">
-      <b-btn class="submit_button" v-on:click="prevStage">Back to Ratings</b-btn>
+    <div v-show="stage == 3" class="large_card fixed_center">
       <p>Now write your review. Don’t forget to keep your ratings in mind.</p>
-      <textarea v-model="review.text"></textarea>
+      <textarea class="smaller_font" rows="8" cols="100" v-model="review.text"></textarea><br>
+      <b-btn class="submit_button" v-on:click="prevStage">Back to Ratings</b-btn>
       <b-btn class="submit_button" v-on:click="nextStage">Submit Review</b-btn>
     </div>
-    <div v-show="stage == 4">
-
-      <p>We won’t make your reviews visible until you tell us to. Choose how many reviews you would like to be posted before yours becomes visible.</p>
+    <div v-show="stage == 4" class="large_card fixed_center">
+      <p class="smaller_font">We won’t make your reviews visible until you tell us to. Choose how many reviews you would like to be posted before yours becomes visible.</p>
+      <input v-model="review.min_show"><br><br>
       <b-btn class="submit_button" v-on:click="prevStage">Back to Review</b-btn>
-      Privacy: Minimum People
-      <input v-model="review.min_show">
       <b-btn class="submit_button" v-on:click="nextStage">Save Privacy</b-btn>
     </div>
-    <div v-show="stage == 5">
-      <p>Last chance to change anything!</p>
+    <div v-show="stage == 5" class="large_card fixed_center">
+      All your changes will be saved once you hit submit!<br>
       <b-btn class="submit_button" v-on:click="prevStage">Go Back</b-btn>
       <b-btn class="submit_button" v-on:click="submitReview">Submit</b-btn>
     </div>
-    <div v-show="stage == 6">
-      Yay! You did it!
+    <div v-show="stage == 6" class="fixed_center large_card">
+      <h1>Congrats! You're done!</h1><br>
+      <router-link to="profile"><b-btn to="profile" class="submit_button">View my profile</b-btn></router-link>
     </div>
   </div>
 </template>
@@ -83,6 +82,9 @@
 <style scoped>
   @import '~bootstrap/dist/css/bootstrap.css';
   @import '~bootstrap-vue/dist/bootstrap-vue.css';
+  .smaller_font {
+    font-size: 18px;
+  }
   .round {
     border-radius: 10px;
   }
