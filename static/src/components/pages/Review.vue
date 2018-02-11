@@ -53,15 +53,15 @@
 
     </div>
     <div v-show="stage == 3">
-      <span v-on:click="prevStage">Back to Ratings</span>
+      <b-btn class="submit_button" v-on:click="prevStage">Back to Ratings</b-btn>
       <textarea v-model="review.text"></textarea>
-      <span v-on:click="nextStage">Submit Review</span>
+      <b-btn class="submit_button" v-on:click="nextStage">Submit Review</b-btn>
     </div>
     <div v-show="stage == 4">
-      <span v-on:click="prevStage">Back to Review</span>
+      <b-btn class="submit_button" v-on:click="prevStage">Back to Review</b-btn>
       Privacy: Minimum People
       <input v-model="review.min_show">
-      <span v-on:click="nextStage">Submit Privacy</span>
+      <b-btn class="submit_button" v-on:click="nextStage">Save Privacy</b-btn>
     </div>
     <div v-show="stage == 5">
       <b-btn class="submit_button" v-on:click="prevStage">Go Back</b-btn>
