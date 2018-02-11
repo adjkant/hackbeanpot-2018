@@ -24,10 +24,6 @@
 
     <div class="ratings" v-if="stage == 2">
 
-      <div class="progress">
-        TODO
-      </div>
-
       <div class="q_holder">
         <a>
           <div class="arrow prev" v-on:click="prevRating">
@@ -134,7 +130,6 @@
 
   .ratings {
     margin: 0px 50px;
-    background-color: green;
     height: 80%;
   }
 
@@ -159,10 +154,10 @@
   }
 
   .arrow {
-    padding-top: 250px;
+    padding-top: 100px;
     width: 10%;
     font-size: 60px;
-    color: #90b0ff;
+    color: #000000;
   }
 
   .prev {
@@ -195,12 +190,12 @@
     float: left;
     margin: 0px;
     padding: 10px 50px;
-    background-color: #913a13;
     position: relative;
     height: 500px;
     width: 60%;
     max-width: 60%;
     vertical-align: middle;
+    font-size: 20px;
   }
 
 </style>
@@ -330,9 +325,6 @@
           bgStyle: {
               "backgroundColor": "#57f043"
           },
-          sliderStyle: {
-            "backgroundColor": "#f03d46"
-          }
         },
         stage: 1,
         question_num: 0,
