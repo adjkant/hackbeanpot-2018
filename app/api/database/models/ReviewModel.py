@@ -49,6 +49,7 @@ class Review(Base):
     self.school_id = school_id
     self.job_id = job_id
     self.job_type = job_type
+    self.company_id = company_id
     self.duration = duration
     self.location = location
     self.salary = salary
@@ -73,6 +74,7 @@ class Review(Base):
       'school_id': self.school_id,
       'job_id': self.job_id,
       'job_type': self.job_type,
+      'company_id': self.company_id,
       'duration': self.duration,
       'location': self.location,
       'salary': self.salary,
