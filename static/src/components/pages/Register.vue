@@ -1,19 +1,23 @@
 <template>
-  <form>
-      <label for='fName'>First Name:</label>
-      <input v-model="fName" id="fName" placeholder="First Name">
+  <div>
+    <h1 v-if="this.error !== null">Warning: {{error}}</h1>
+    <br/>
+    <form>
+      <label for="first">First Name:</label>
+      <input v-model="first" id="first" placeholder="First Name">
       <br/>
-      <label for='lName'>Last Name:</label>
-      <input v-model="lName" id="lName" placeholder="Last Name">
+      <label for="last">Last Name:</label>
+      <input v-model="last" id="last" placeholder="Last Name">
       <br/>
-      <label for='uName'>Username:</label>
-      <input v-model="uName" id="uName" placeholder="Username">
+      <label for="email">Email:</label>
+      <input v-model="email" id="email" placeholder="smartyboi@harvard.edu">
       <br/>
-      <label for='pWord'>Password:</label>
-      <input type="password" id='pWord' v-model="pWord">
+      <label for="password">Password:</label>
+      <input type="password" id="password" v-model="password">
       <br/>
-      <button value="Submit" v-on:click="handleSubmit">Submit</button>
-  </form>
+      <a value="Submit" v-on:click="handleSubmit">Submit</a>
+    </form>
+  </div>
 </template>
 
 <style scoped>
@@ -34,40 +38,74 @@
 </style>
 
 <script>
-  import axios from 'axios';
+  import axios from "axios";
+  import router from "@/router/index";
 
   export default {
-    name: 'login',
+    name: "login",
     data () {
       return {
-        fName: '',
-        lName: '',
-        uName: '',
-        pWord: '',
+        error: null,
+        first: "",
+        last: "",
+        email: "",
+        password: "",
+        school_id: null,
       }
     },
     methods: {
       handleSubmit() {
-        let instance = axios.create({
-          baseURL: 'http://localhost:5000/api/'
+        let backend = axios.create({
+          baseURL: "http://localhost:5000/api/"
         });
 
-        let loginInfo = {
-          firstName: this.fName.value,
-          lastName: this.lName.value,
-          username: this.uName.value,
-          password: this.pWord.value,
-        };
+        let email_ext = this.email.split("@")[1];
 
-        console.log(loginInfo);
-
-        instance.post('/user/create', loginInfo, {withCredentials: true})
+        backend.get("email-ext/find/" + email_ext)
         .then(response => {
-          console.log('Got: ' + response.data);
+            console.log('Email lookup:')
+            console.log(response)
+            this.school_id = response.data['school_id'];
+            this.handleSignup(backend)
         })
         .catch(error => {
+          this.error = true;
+          console.log(error);
+        })
+      },
+      handleSignup(backend) {
+        let accountInfo = {
+          first: this.first,
+          last: this.last,
+          email: this.email,
+          password: this.password,
+          school_id: this.school_id
+        };
+
+        console.log(accountInfo);
+
+        backend.post("/user/create", accountInfo)
+        .then(response => {
+          this.doLogin(backend);
+        })
+        .catch(error => {
+          this.error = true;
           console.log(error);
         });
+      },
+      doLogin(backend) {
+        let loginInfo = {
+          email: this.email,
+          password: this.password,
+        }
+        backend.post('/user/login', loginInfo, {withCredentials: true})
+        .then(response => {
+          window.location = "/";
+        })
+        .catch(error => {
+          this.error = true;
+          console.log(error);
+        })
       }
     }
   }
