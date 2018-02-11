@@ -17,6 +17,7 @@ import ProfileEdit from '@/components/pages/ProfileEdit'
 import Search from '@/components/pages/Search'
 import Company from '@/components/pages/Company'
 import Review from '@/components/pages/Review'
+import ReviewInfo from '@/components/pages/ReviewInfo'
 import Page404 from '@/components/pages/Page404'
 
 Vue.use(Router);
@@ -79,6 +80,12 @@ export default new Router({
       path: '/review',
       name: 'review',
       component: Review,
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/review-info/:review_id',
+      name: 'review-info',
+      component: ReviewInfo,
       beforeEnter: requireAuth
     },
     {

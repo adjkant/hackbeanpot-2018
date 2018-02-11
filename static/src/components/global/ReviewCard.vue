@@ -1,7 +1,11 @@
 <template>
   <b-card>
-    <b-button class="btn btn-warning btn-circle btn-xl">{{ value.avg_rating }} </b-button>
+    <router-link :to="review-info/value.id"<b-button class="btn btn-warning btn-circle btn-xl">{{ value.avg_rating }} </b-button></router-link>
+    <br/>
+    {{ company_name }}
+    <br/>
     {{ value.job_type }}
+    <br/>
     {{ value.location }}
 </b-card>
 </template>
@@ -37,8 +41,16 @@
 </style>
 
 <script>
+  import router from "@/router/index";
+  import axios from 'axios';
   export default {
-    name: 'review-card',
+    name: 'review-card', 
+    data: function () {
+      return {
+        backend: axios.create({baseURL: "http://localhost:5000/api"}),
+        company_name: '',
+      }
+    },
     props: [
       'company',
       'rating',
@@ -50,15 +62,22 @@
       'review'
     ],
     created: function () {
+      this.backend.get('company/' + this.value.company_id, {withCredentials: true})
+      .then(response => {
+        this.company_name = response.data['name'];
+      })
+      .catch(error => {
+        console.log(error);
+      })
       this.circle_color = "#ffffff";
       switch(true) {
-        case rating >= 9.0:
+        case this.value.avg_rating >= 9.0:
           this.circle_color = "green";
           break;
-        case rating >= 8.0:
+        case this.value.avg_rating >= 8.0:
           this.circle_color = "";
           break;
-        case rating >= 7.0:
+        case this.value.avg_rating >= 7.0:
           this.circle_color = "";
           break;
         default:
