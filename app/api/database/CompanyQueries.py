@@ -51,4 +51,5 @@ def get_by_name(db, name):
 def get_company(db, company_id):
   return db.query(Company).filter(Company.id == company_id).first()
 
-
+def get_name_like(db, name):
+  return db.query(Company).filter(Company.name.like(name)).all()

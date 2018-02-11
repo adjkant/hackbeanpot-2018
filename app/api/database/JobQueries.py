@@ -32,3 +32,6 @@ def get_job(db, job_id):
 def get_by_info(db, title, company_id):
   return db.query(Job).filter(Job.title == title).filter(Job.company_id == company_id).first()
 
+def get_job_like_title(db, title):
+  return db.query(Job).filter(Job.title.like(title))
+

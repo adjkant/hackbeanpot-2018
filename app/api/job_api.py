@@ -2,7 +2,7 @@
 from flask import Blueprint, request, jsonify
 from flask_api import status
 
-from app.api.utils import get_logged_in_user, validate_json
+from app.api.utils import get_logged_in_user, validate_json, serialize_all
 from app.api.database import session_manager
 import app.api.database.JobQueries as JobQueries
 
@@ -49,3 +49,17 @@ def get_job(job_id):
     return jsonify(job.serialize), status.HTTP_200_OK
   else:
     return "", status.HTTP_404_NOT_FOUND
+
+@validate_json(['title'])
+@job_api.route('/search', methods=['POST'])
+def search_job_title():
+  db = session_manager.new_session()
+  body = request.get_json()
+  user = get_logged_in_user(db, request)
+  if not user:
+    return "", status.HTTP_401_UNAUTHORIZED
+
+  jobs = JobQueries.get_job_list_title(db, body['title'])
+  if not jobs:
+    return "", status.HTTP_401_UNAUTHORIZED
+  return jsonify(serialize_all(jobs)), status.HTTP_200_OK
