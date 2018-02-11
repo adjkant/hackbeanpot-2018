@@ -30,7 +30,7 @@
     position: relative;
     vertical-align: middle;
     float: right;
-    padding: 0px 20px;
+    padding: 11px 20px;
   }
   .fa {
     font-size: 20px;

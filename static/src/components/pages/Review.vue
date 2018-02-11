@@ -302,14 +302,14 @@
     data: function() {
       return {
         review: {
-          company: 'a',
-          position: 'b',
-          city: 'c',
-          job_type: 'internship',
-          text: 'test',
-          min_show: 1,
-          duration: 2,
-          salary: 5.5,
+          company: '',
+          position: '',
+          city: '',
+          job_type: 'co-op',
+          text: '',
+          min_show: 5,
+          duration: '',
+          salary: '',
         },
         rat_value: 50,
         options: {

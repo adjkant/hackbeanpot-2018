@@ -28,7 +28,7 @@
     width: 100%;
     color: white;
     background-color: #fc5f45;
-    height: 60px;
+    height: 70px;
   }
   .title {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
@@ -40,7 +40,8 @@
   }
   .icons {
     float: right;
-    padding: 0px 20px;
+    padding-top: 10px;
+    padding-right: 20px;
   }
   .fa {
     font-size: 30px;

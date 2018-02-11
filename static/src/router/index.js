@@ -27,7 +27,7 @@ export default new Router({
     {
       path: '/',
       name: 'splash',
-      component: Splash
+      component: Home
     },
     {
       path: '/login',
