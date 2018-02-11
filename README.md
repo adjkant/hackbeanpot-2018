@@ -11,8 +11,16 @@ Written in Flask & Vue with SqlAlchemy. Created for [HackBeanPot](https://hackbe
 
 ### Install & Run
 * Clone or download the repo
+
+**Backend**
 * `pip3 install -r requirements.txt`
 * `python3 run.py`
+
+**Frontend**
+* `(cd static && npm install)`
+* `npm start`
+
+**View on http://localhost:8080**
 
 ### Usage
 
