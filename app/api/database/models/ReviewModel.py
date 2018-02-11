@@ -93,5 +93,5 @@ class Review(Base):
       'min_visible': self.min_visible,
       'show_immediate': self.show_immediate,
       'review_text': self.review_text,
-      'avg_rating': avg
+      'avg_rating': int(avg)
     }
