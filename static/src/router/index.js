@@ -30,11 +30,6 @@ export default new Router({
       component: Splash
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About
-    },
-    {
       path: '/login',
       name: 'login',
       component: Login

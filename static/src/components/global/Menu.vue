@@ -4,13 +4,11 @@
     <div class="icons">
       <span v-if="!$cookies.get('sessionToken')">
         <router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-        <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
         <router-link to="login"><i class="fa fa-user" aria-hidden="true"></i></router-link>
       </span>
 
       <span v-if="$cookies.get('sessionToken')">
         <router-link to="home"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-        <router-link to="about"><i class="fa fa-info-circle" aria-hidden="true"></i></router-link>
         <router-link to="review"><i class="fa fa-plus-square-o" aria-hidden="true"></i></router-link>
         <router-link to="search"><i class="fa fa-search" aria-hidden="true"></i></router-link>
         <router-link to="profile"><i class="fa fa-user" aria-hidden="true"></i></router-link>

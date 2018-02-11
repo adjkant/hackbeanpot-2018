@@ -47,7 +47,7 @@
     </div>
     <div v-show="stage == 4">
       <span v-on:click="prevStage">Back to Ratings</span>
-      Review
+      <textarea v-model="review"></textarea>
       <span v-on:click="nextStage">Submit Review</span>
     </div>
     <div v-show="stage == 5">
