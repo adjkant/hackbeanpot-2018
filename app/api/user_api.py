@@ -96,7 +96,7 @@ def get_reviews():
   if not user:
     return "", status.HTTP_401_UNAUTHORIZED
   else:
-    reviews = ReviewQueries.get_reviews_filtered(db, {}, user.id)
+    reviews = ReviewQueries.get_filtered_reviews(db, {}, user.id)
     if reviews:
       return jsonify(serialize_all(reviews)), status.HTTP_200_OK
     else:
