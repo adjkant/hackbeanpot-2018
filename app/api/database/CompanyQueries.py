@@ -14,7 +14,7 @@ def create_company(db, body):
     db.rollback()
     return False
 
-  return True
+  return company.id
 
 def edit_company(db, body, company_id):
   q = db.query(Company).filter(Company.id == company_id).first()
@@ -41,9 +41,12 @@ def get_company_filtered(db, filters, user_id):
 
   for key, value in filters.items():
     if key == 'user_id' and int(value) != int(user_id):
-        return False
+      return False
     q = q.filter(getattr(Company, key) == value)
   return q
+
+def get_by_name(db, name):
+  return db.query(Company).filter(Company.name == name).first()
 
 def get_company(db, company_id):
   return db.query(Company).filter(Company.id == company_id).first()
