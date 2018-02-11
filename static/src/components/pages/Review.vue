@@ -1,6 +1,7 @@
 <template>
-  <div class="large_card">
-    <div v-show="stage == 1">
+  <div>
+    <div v-show="stage == 1" class="large_card fixed_center">
+      <b-form class="login_form">
       Company
       <input v-model="review.company">
       Position
@@ -10,15 +11,17 @@
       Duration
       <input v-model="review.duration">
       Salary
-      <input v-model="review.salary">
+      <input v-model="review.salary"><br><br>
       <select v-model="review.job_type">
         <option value="co-op">Co-op</option>
         <option value="internship">Internship</option>
         <option value="reu">REU</option>
         <option value="remote">Remote</option>
-      </select>
+      </select><br><br>
       <span v-on:click="nextStage">Start Review</span>
+        </b-form>
     </div>
+
     <div class="ratings" v-if="stage == 2">
 
       <div class="progress">
