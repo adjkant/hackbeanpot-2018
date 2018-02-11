@@ -22,7 +22,7 @@
         </b-form>
     </div>
 
-    <div class="ratings" v-if="stage == 2">
+    <div class="fixed_center_arrows large_card_arrows" v-if="stage == 2">
 
       <div class="q_holder">
         <a>
@@ -95,10 +95,24 @@
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     text-align: center;
   }
+  .large_card_arrows {
+    font-size: 1.5em;
+    width: 80%;
+    color: #333333;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    text-align: center;
+  }
   .fixed_center {
     position: fixed;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .fixed_center_arrows {
+    /*width: 80%;*/
+    position: fixed;
+    top: 60%;
+    left: 55%;
     transform: translate(-50%, -50%);
   }
   .login_form {
